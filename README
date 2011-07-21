@@ -1,0 +1,19 @@
+The goal of this project is to explore current rails and HTML tech while 
+creating the best possible Rock Paper Scissors (RPS) experience.
+
+The first goal will be to create system for registering and logging users 
+(authlogic?). 
+
+Second, we will make a simple version of RPS: 1 player vs. 
+a simple AI (just random selection), where each round is a full match.
+
+Third, we will expand the game to allow multiple rounds per match. Players 
+will be able to see the previous results of each of their own matches in 
+a round by round viewer. Work will be done to improve the visual style of 
+site (AJAX (jQuery?), HTML5, &c.)
+
+Fourth, we will add tournament rules and plays (shouts, psychs, early shows,
+ &c.). We might also attempt to improve the AI at this stage. Styling for
+mobile will be done here.
+
+Fifth, ...?
