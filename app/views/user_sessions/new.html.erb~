@@ -1,0 +1,6 @@
+<h1>Login</h1>
+
+<% form_for @user_session, :url => user_session_path do |f| %>
+  <%= render 'form' %>
+  <%= f.submit "Login" %>
+<% end %>

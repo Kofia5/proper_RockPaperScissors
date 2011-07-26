@@ -1,0 +1,20 @@
+<% if form.object.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(form.object.errors.count, "error") %> prohibited this user from being saved:</h2>
+      <ul>
+      <% form.object.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+  </div>
+<% end %>
+
+<br/>
+<%= form.label :username %><br/>
+<%= form.text_field :username %><br/>
+<br/>
+<%= form.label :password, form.object.new_record? ? nil : "Change password" %><br/>
+<%= form.password_field :password %><br/>
+
+<br/>
+

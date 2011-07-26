@@ -1,4 +1,9 @@
 ProperRockPaperScissors::Application.routes.draw do
+resource :account, :controller => "users"  
+resources :users
+resource :user_session
+root :controller => "user_sessions", :action => "new"
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -48,7 +53,7 @@ ProperRockPaperScissors::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => "welcome#index"
+  root :to => "users#index"
 
   # See how all your routes lay out with "rake routes"
 
