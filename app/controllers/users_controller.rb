@@ -18,7 +18,6 @@ class UsersController < ApplicationController
   # GET /users/1.xml
   def show
     @user = @current_user
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @user }
@@ -29,7 +28,9 @@ class UsersController < ApplicationController
   # GET /users/new.xml
   def new
     @user = User.new
-
+    @user.stats = Stats.new
+    @stats = @user.stats
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @user }
@@ -45,9 +46,10 @@ class UsersController < ApplicationController
   # POST /users.xml
   def create
     @user = User.new(params[:user])
-
+    @stats = Stats.new
+    @user.stats = @stats
     respond_to do |format|
-      if @user.save
+      if @user.save && @stats.save
         format.html { redirect_to(@user, :notice => 'User was successfully created.') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
         #flash[:notice] = "Account register!"

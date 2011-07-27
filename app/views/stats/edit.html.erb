@@ -1,0 +1,12 @@
+<h1>Edit User Infomation</h1>
+<%= form_for @user, :url => account_path do |f| %>
+  <%= render :partial => 'error', :object => f %>
+  <br/>
+  <%= f.label :email %><br/>
+  <%= f.text_field :email %><br/>  
+  <br/>
+  <%= render :partial => 'form', :object => f %>
+  <%= f.submit "Save Changes" %>
+<% end %>
+<%= link_to 'Back', users_path %>
+

@@ -11,7 +11,6 @@
     <th>Last login at</th>
     <th>Current login ip</th>
     <th>Last login ip</th>
-    <th>Games Played</th>
     <th></th>
     <th></th>
     <th></th>
@@ -28,7 +27,6 @@
     <td><%= user.last_login_at %></td>
     <td><%= user.current_login_ip %></td>
     <td><%= user.last_login_ip %></td>
-    <td><%= user.stats.games_played %></td>
     <td><%= link_to 'Show', user %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>

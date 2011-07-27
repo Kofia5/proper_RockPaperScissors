@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Wins:</b>
+  <%= @user.stats.wins %>
+</p>
+
+<p>
+  <b>Losses:</b>
+  <%= @user.stats.games_played - @user.stats.wins %>
+</p>
+
+<p>
+  <b>Games Played:</b>
+  <%= @stats.games_played %>
+</p>
+
+
+<%= link_to 'Back', users_path %>

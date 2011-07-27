@@ -2,6 +2,7 @@ ProperRockPaperScissors::Application.routes.draw do
 resource :account, :controller => "users"  
 resources :users
 resource :user_session
+root :controller => "stats", :action => "show"
 root :controller => "user_sessions", :action => "new"
   
   # The priority is based upon order of creation:

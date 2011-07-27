@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  wins: 1
+  games_played: 1
+  user: 
+
+two:
+  wins: 1
+  games_played: 1
+  user: 
