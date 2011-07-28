@@ -1,0 +1,9 @@
+<h1>Game#play</h1>
+<p>Find me in app/views/game/play.html.erb</p>
+
+<p>User " <%= User.find(@game.winner).username %> " wins (in 
+<%= @game.rounds_played %> rounds out of a possible <%= @game.total_rounds %>)!
+</p>
+
+</br>
+<%= link_to "List of Games", games_path %>

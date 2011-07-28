@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :only => [:show, :edit, :update, :destroy]
+  before_filter :require_user, :only => [:edit, :update, :destroy]
 
   # GET /users
   # GET /users.xml
@@ -17,7 +17,8 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
-    @user = @current_user
+    current_user
+    @user = params[:id] ? User.find(params[:id]) : @current_user
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @user }
@@ -89,6 +90,17 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(users_url) }
+      format.xml  { head :ok }
+    end
+  end
+
+  def list_games
+    current_user
+    @user = User.find(params[:id])
+    @games = Game.where("player1 = ? OR player2 = ?", params[:id], params[:id])
+
+    respond_to do |format|
+      format.html { render :action => 'list_games' }
       format.xml  { head :ok }
     end
   end

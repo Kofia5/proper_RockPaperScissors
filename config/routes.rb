@@ -1,9 +1,21 @@
 ProperRockPaperScissors::Application.routes.draw do
+  get "games/setup"
+  get "games/play"
+resources :games do
+    resources :rounds
+    #get 'setup', :on => :member
+end
 resource :account, :controller => "users"  
-resources :users
+resources :users do
+    member do
+      get 'list_games'
+    end
+end
 resource :user_session
 root :controller => "stats", :action => "show"
 root :controller => "user_sessions", :action => "new"
+
+#match 'list_games/:id' => 'list_games'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

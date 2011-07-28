@@ -1,50 +1,49 @@
-<h1>Listing users</h1>
+<h1>Leaderboard</h1>
 
 <table>
   <tr>
     <th>Username</th>
-    <th>Email</th>
-    <th>Login count</th>
-    <th>Falied login count</th>
-    <th>Last request at</th>
-    <th>Current login at</th>
-    <th>Last login at</th>
-    <th>Current login ip</th>
-    <th>Last login ip</th>
+    <th>Wins</th>
+    <th>Losses</th>
     <th>Games Played</th>
+    <th>Last Game Played</th>
+    <% if @current_user %>
     <th></th>
     <th></th>
-    <th></th>
+    <% end %>
   </tr>
 
 <% @users.each do |user| %>
   <tr>
-    <td><%= user.username %></td>
-    <td><%= user.email %></td>
-    <td><%= user.login_count %></td>
-    <td><%= user.falied_login_count %></td>
-    <td><%= user.last_request_at %></td>
-    <td><%= user.current_login_at %></td>
-    <td><%= user.last_login_at %></td>
-    <td><%= user.current_login_ip %></td>
-    <td><%= user.last_login_ip %></td>
+    <td><%= link_to user.username, user %></td>
+    <td><%= user.stats.wins %></td>
+    <td><%= user.stats.games_played - user.stats.wins %></td>
     <td><%= user.stats.games_played %></td>
-    <td><%= link_to 'Show', user %></td>
+    <td><%= user.stats.updated_at %></td>
+    <% if user == @current_user %>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>
 
-<br />
+</br>
+
+<div id=user_options>
+<% if @current_user %>
+<%= link_to 'Play a Game?', "/games/setup" %>
+ |
+<%= link_to 'Logout', user_session_path, :method => :delete %>
 
 
-<% if @current_user.nil? %>
-<%= link_to 'New User', new_user_path %>
+<% else %>
+<%= link_to 'Register New User', new_user_path %>
  |
 <%= link_to 'Login', new_user_session_path %>
 
-<% else %>
-<%= link_to 'Logout', user_session_path, :method => :delete %>
-
 <% end %>
+ |
+<%= link_to "List of Games", games_path %>
+
+</div>

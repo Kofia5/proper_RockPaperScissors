@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  game: 
+  pOne: 1
+  pA: 1
+
+two:
+  game: 
+  pOne: 1
+  pA: 1

@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  num_rounds: 1
+  winner: 1
+  player1: 1
+  playerA: 1
+
+two:
+  num_rounds: 1
+  winner: 1
+  player1: 1
+  playerA: 1

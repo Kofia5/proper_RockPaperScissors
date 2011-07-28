@@ -1,0 +1,44 @@
+<h1>Listing <%= @user.username %>'s games</h1>
+
+<table>
+  <tr>
+    <th>Winner</th>
+    <th>Player 1</th>
+    <th>Player 2</th>
+    <th>Number of Rounds Played</th>
+    <th>Max Rounds</th>
+    <th>Game Played at</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @games.each do |game| %>
+  <tr>
+    <td><%= User.find(game.winner).username %></td>
+    <td><%= User.find(game.player1).username %></td>
+    <td><%= User.find(game.player2).username %></td>
+    <td><%= game.rounds_played %></td>
+    <td><%= game.total_rounds %></td>
+    <td><%= link_to game.updated_at, game %></td>
+    <td><%= link_to 'Edit', edit_game_path(game) %></td>
+    <td><%= link_to 'Destroy', game, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+
+<% if @current_user.nil? %>
+<%= link_to 'New User', new_user_path %>
+ |
+<%= link_to 'Login', new_user_session_path %>
+
+<% else %>
+<%= link_to 'Play a Game?', games_path, :method => :setup %>
+ |
+<%= link_to 'Logout', user_session_path, :method => :delete %>
+
+<% end %>
+ |
+<%= link_to 'Leaderboard', users_path %>

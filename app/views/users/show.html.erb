@@ -11,6 +11,22 @@
 </p>
 
 <p>
+  <b>Wins:</b>
+  <%= @user.stats.wins %>
+</p>
+
+<p>
+  <b>Losses:</b>
+  <%= @user.stats.games_played - @user.stats.wins %>
+</p>
+
+<p>
+  <b>Games Played:</b>
+  <%= link_to @user.stats.games_played, list_games_user_path(@user) %>
+</p>
+
+<% if @current_user == @user%>
+<p>
   <b>Crypted password:</b>
   <%= @user.crypted_password %>
 </p>
@@ -71,5 +87,8 @@
 </p>
 
 
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<% end %>
+
+<%= link_to 'Leaderboard', users_path %>
