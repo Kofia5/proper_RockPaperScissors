@@ -54,23 +54,17 @@ class GamesController < ApplicationController
   def setup
     current_user
     @user = @current_user
-    @rounds = 3
-    @game = Game.new(:total_rounds => @rounds, :player1 => @user.id)
+    @game = Game.new(:player1 => @user.id)
     session[:game] = @game
     respond_to do |format|
-      if @game.save
-        format.html { redirect_to("/games/play", :notice => "Game successfully created.") }
-        format.xml { render :xml => @game, :status => :created, :location => :@game }
-      else
-        format.html { render :action => "index" }
-        format.xml { render :xml => @game.errors, :status => :unprocessable_entity }
-      end
+      format.html { render 'setup' }
+      format.xml { render :xml => @game, :status => :created, :location => :@game }
     end
   end
 
   def play
     @game = session[:game]
-    @game.play
+    @game.play(params[:game])
 
 
     session[:game] = nil

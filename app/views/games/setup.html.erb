@@ -1,2 +1,13 @@
 <h1>Game#setup</h1>
 <p>Find me in app/views/game/setup.html.erb</p>
+
+<p>Select Number of Rounds to Play to:
+
+<%= form_for @game, :url => { :action => 'play'} do |f| %>
+  <%= f.number_field :total_rounds %>
+  
+  <%= f.submit %>
+<% end %> 
+
+
+</p>

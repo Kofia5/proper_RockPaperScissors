@@ -16,9 +16,10 @@
 <% @users.each do |user| %>
   <tr>
     <td><%= link_to user.username, user %></td>
-    <td><%= user.stats.wins %></td>
-    <td><%= user.stats.games_played - user.stats.wins %></td>
-    <td><%= user.stats.games_played %></td>
+    <td><%= link_to user.stats.wins, list_wins_user_path(user) %></td>
+    <td><%= link_to (user.stats.games_played - user.stats.wins), 
+	    list_losses_user_path(user) %></td>
+    <td><%= link_to user.stats.games_played, list_games_user_path(user) %></td>
     <td><%= user.stats.updated_at %></td>
     <% if user == @current_user %>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>

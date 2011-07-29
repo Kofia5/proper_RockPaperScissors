@@ -96,12 +96,39 @@ class UsersController < ApplicationController
 
   def list_games
     current_user
+    @header_option = 'games'
     @user = User.find(params[:id])
-    @games = Game.where("player1 = ? OR player2 = ?", params[:id], params[:id])
+    @games = Game.where("player1 = ? OR player2 = ?", @user, @user)
 
     respond_to do |format|
       format.html { render :action => 'list_games' }
       format.xml  { head :ok }
     end
   end
+
+  def list_wins
+    current_user
+    @header_option = 'wins'
+    @user = User.find(params[:id])
+    @games = Game.find_all_by_winner(@user)
+
+    respond_to do |format|
+      format.html { render :action => 'list_games' }
+      format.xml  { head :ok }
+    end
+  end
+
+  def list_losses
+    current_user
+    @header_option = 'losses'
+    @user = User.find(params[:id])
+    @games = Game.where("(player1 = ? OR player2 = ?) AND winner != ?", 
+                        @user, @user, @user)
+
+    respond_to do |format|
+      format.html { render :action => 'list_games' }
+      format.xml  { head :ok }
+    end
+  end
+
 end

@@ -12,12 +12,12 @@
 
 <p>
   <b>Wins:</b>
-  <%= @user.stats.wins %>
+  <%= link_to @user.stats.wins, list_wins_user_path(@user) %>
 </p>
 
 <p>
   <b>Losses:</b>
-  <%= @user.stats.games_played - @user.stats.wins %>
+  <%= link_to (@user.stats.games_played - @user.stats.wins), list_losses_user_path(@user) %>
 </p>
 
 <p>

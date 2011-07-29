@@ -3,8 +3,13 @@ class Stats < ActiveRecord::Base
   has_many :games
   has_many :rounds, :through => :games
 
+  validates_presence_of :user_id
+
+  validates_numericality_of :games_played, :only_integer => true
+  validates_numericality_of :wins, :only_integer => true, :less_than_of_equal_to => :games_played
+
   def win
-    increment(:win)
+    increment(:wins)
     increment(:games_played)
   end
 

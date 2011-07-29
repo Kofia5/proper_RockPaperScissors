@@ -1,6 +1,6 @@
 ProperRockPaperScissors::Application.routes.draw do
   get "games/setup"
-  get "games/play"
+  post "games/play"
 resources :games do
     resources :rounds
     #get 'setup', :on => :member
@@ -9,6 +9,8 @@ resource :account, :controller => "users"
 resources :users do
     member do
       get 'list_games'
+      get 'list_wins'
+      get 'list_losses'
     end
 end
 resource :user_session

@@ -3,7 +3,7 @@ class CreateStats < ActiveRecord::Migration
     create_table :stats do |t|
       t.integer :wins,         :null => false, :default => 0
       t.integer :games_played, :null => false, :default => 0
-      t.references :user
+      t.references :user, :null => false
 
       t.timestamps
     end
