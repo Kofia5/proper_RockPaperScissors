@@ -1,3 +1,5 @@
+<p id="notice"><%= notice %></p>
+
 <h1>Listing <%= @user.username %>'s <%= @header_option %></h1>
 
 <table>
@@ -14,9 +16,9 @@
 
 <% @games.each do |game| %>
   <tr>
-    <td><%= User.find(game.winner).username %></td>
-    <td><%= User.find(game.player1).username %></td>
-    <td><%= User.find(game.player2).username %></td>
+    <td><%= Stats.find(game.winner).user.username %></td>
+    <td><%= Stats.find(game.player1).user.username %></td>
+    <td><%= Stats.find(game.player2).user.username %></td>
     <td><%= game.rounds_played %></td>
     <td><%= game.total_rounds %></td>
     <td><%= link_to game.updated_at, game %></td>

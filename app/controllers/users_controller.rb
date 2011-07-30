@@ -19,6 +19,8 @@ class UsersController < ApplicationController
   def show
     current_user
     @user = params[:id] ? User.find(params[:id]) : @current_user
+    @rounds = @user.rounds(10,true)
+    @throw_names = Game::THROW_OPTIONS.invert
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @user }
@@ -98,7 +100,7 @@ class UsersController < ApplicationController
     current_user
     @header_option = 'games'
     @user = User.find(params[:id])
-    @games = Game.where("player1 = ? OR player2 = ?", @user, @user)
+    @games = @user.games
 
     respond_to do |format|
       format.html { render :action => 'list_games' }
@@ -110,7 +112,7 @@ class UsersController < ApplicationController
     current_user
     @header_option = 'wins'
     @user = User.find(params[:id])
-    @games = Game.find_all_by_winner(@user)
+    @games = @user.games_won
 
     respond_to do |format|
       format.html { render :action => 'list_games' }
@@ -122,8 +124,7 @@ class UsersController < ApplicationController
     current_user
     @header_option = 'losses'
     @user = User.find(params[:id])
-    @games = Game.where("(player1 = ? OR player2 = ?) AND winner != ?", 
-                        @user, @user, @user)
+    @games = @user.games_lost
 
     respond_to do |format|
       format.html { render :action => 'list_games' }

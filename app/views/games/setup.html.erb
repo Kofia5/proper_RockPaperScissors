@@ -4,7 +4,8 @@
 <p>Select Number of Rounds to Play to:
 
 <%= form_for @game, :url => { :action => 'play'} do |f| %>
-  <%= f.number_field :total_rounds %>
+  <%= f.number_field :total_rounds, :min => 1, :step => 2, 
+  :placeholder => "Pick an odd number of rounds" %>
   
   <%= f.submit %>
 <% end %> 

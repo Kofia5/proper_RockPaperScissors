@@ -86,8 +86,34 @@
   <%= @user.last_login_ip %>
 </p>
 
+<% end %>
+
+<p id='rounds'>
+  <b>Last 10 rounds</b>
+
+  <table>
+    <tr>
+      <th>Result:</th>
+      <th>Opponent:</th>
+      <th><%= @user.username %> played:</th>
+      <th>Opponent played:</th>
+    </tr>
+
+  <% @rounds.each do |round| %>
+    <% curGame = Game.find(round.game_id) %>
+    <% isOne = curGame.player1 == @user.stats.id %>
+    <tr>
+      <td><%= round.winner == -1 ? '-' : (((round.winner == 1) && isOne) or ((round.winner == 2) &&  !isOne)) ? 'Win' : 'Loss' %></td>
+      <td><%= isOne ? Stats.find(curGame.player2).user.username : Stats.find(curGame.player1).user.username %></td>
+      <td><%= isOne ? @throw_names[round.player1] : @throw_names[round.player2] %></td>
+      <td><%= isOne ? @throw_names[round.player2] : @throw_names[round.player1] %></td>
+      </tr>
+  <% end %>
+</p>
 
 
+
+<% if @current_user %>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <% end %>
 

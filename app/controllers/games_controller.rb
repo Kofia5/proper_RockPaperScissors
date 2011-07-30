@@ -4,7 +4,7 @@ class GamesController < ApplicationController
 
   def index
     current_user
-    @games = Game.all
+    @games = Game.order('updated_at DESC')
   end
 
   def new
@@ -17,10 +17,11 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    @winner = User.find(@game.winner).username
-    @player1 = User.find(@game.player1).username
-    @player2 = User.find(@game.player2).username
-    @rounds = Round.find_all_by_game_id(@game.id)
+    @winner = Stats.find(@game.winner).user.username
+    @player1 = Stats.find(@game.player1).user.username
+    @player2 = Stats.find(@game.player2).user.username
+    @rounds = @game.rounds.order('rounds.id ASC')
+    @throw_names = Game::THROW_OPTIONS.invert
   end
 
   def edit
@@ -30,15 +31,16 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
 
-    respond_to do |format|
-      if @game.update_attributes(params[:game])
-        format.html { redirect_to(@gamer, :notice => 'Game was successfully updated.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @game.errors, :status => :unprocessable_entity }
-      end
-    end
+    @game.playRound(params[:playRound])
+    #respond_to do |format|
+    #  if @game.update_attributes(params[:game])
+    #    format.html { redirect_to(@gamer, :notice => 'Game was successfully updated.') }
+    #    format.xml  { head :ok }
+    #  else
+    #    format.html { render :action => "edit" }
+    #    format.xml  { render :xml => @game.errors, :status => :unprocessable_entity }
+    #  end
+    #end
   end
 
   def destroy
@@ -54,7 +56,8 @@ class GamesController < ApplicationController
   def setup
     current_user
     @user = @current_user
-    @game = Game.new(:player1 => @user.id)
+    @player1 = @user.stats.id
+    @game = Game.new(:player1 => @player1)
     session[:game] = @game
     respond_to do |format|
       format.html { render 'setup' }
@@ -66,8 +69,17 @@ class GamesController < ApplicationController
     @game = session[:game]
     @game.play(params[:game])
 
-
     session[:game] = nil
   end
 
+  def playRound
+    @user = session[:user]
+    @game = session[:game]
+    @game.play_round(params[:game])
+    
+    respond_to do |format|
+      format.html { render 'play' }
+      format.xml { render :xml => @game, :status => :roundplayed, :location => :@game }
+    end
+  end
 end

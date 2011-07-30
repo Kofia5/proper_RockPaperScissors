@@ -36,9 +36,9 @@
     <% @rounds.each do |round| %>
     <tr>
       <th><%= round.num_round %></th>
-      <th><%= round.winner == 1 ? @player1 : @player2 %></th>
-      <th><%= round.player1 %></th>
-      <th><%= round.player2 %></th>
+      <th><%= round.winner < 0 ? '-' : round.winner == 1 ? @player1 : @player2 %></th>
+      <th><%= @throw_names[round.player1] %></th>
+      <th><%= @throw_names[round.player2] %></th>
     </tr>
     <% end %>
 </p>

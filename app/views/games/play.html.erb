@@ -1,8 +1,16 @@
 <h1>Game#play</h1>
 <p>Find me in app/views/game/play.html.erb</p>
 
-<p>User " <%= User.find(@game.winner).username %> " wins (in 
+<p>User " <%= Stats.find(@game.winner).user.username %> " wins (in 
 <%= @game.rounds_played %> rounds out of a possible <%= @game.total_rounds %>)!
+</p>
+
+<p>
+<%= form_for @game do |f| %>
+  <%= f.select :playRound, Game::THROW_OPTIONS %>
+  
+  <%= f.submit %>
+<% end %> 
 </p>
 
 </br>
