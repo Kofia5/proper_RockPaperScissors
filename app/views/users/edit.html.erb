@@ -1,4 +1,5 @@
-<h1>Edit User Infomation</h1>
+<h2>Edit User Infomation</h2>
+<div class='container'>
 <%= form_for @user, :url => account_path do |f| %>
   <%= render :partial => 'error', :object => f %>
   <br/>
@@ -8,5 +9,5 @@
   <%= render :partial => 'form', :object => f %>
   <%= f.submit "Save Changes" %>
 <% end %>
-<%= link_to 'Back', users_path %>
-
+<%= link_to 'Do Not Save Changes', :back %>
+</div>

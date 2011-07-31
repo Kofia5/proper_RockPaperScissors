@@ -70,8 +70,8 @@ class Game < ActiveRecord::Base
                   else #fail
                   end
       when 2 then case pick2 #scissor
-                  when 0 then win1(pick1,pick2)
-                  when 1 then win2(pick1,pick2)
+                  when 0 then win2(pick1,pick2)
+                  when 1 then win1(pick1,pick2)
                   when 2 then tie(pick1,pick2)
                   else #fail
                   end

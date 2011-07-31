@@ -1,9 +1,16 @@
-body { background-color: #fff; color: #333; }
+/* General */
+
+body { background-color: #eee; color: #333; }
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
-  font-size:   13px;
+  font-size:   14px;
   line-height: 18px;
+  #width: 500px;
+}
+
+h1 {
+    font-size: xx-large;
 }
 
 pre {
@@ -13,12 +20,60 @@ pre {
 }
 
 a { color: #000; }
-a:visited { color: #666; }
-a:hover { color: #fff; background-color:#000; }
+a:visited { color: #555; }
+a:hover { color: red; #background-color:#000; }
+
+.container {
+    padding: 0 50px 0 50px;
+    border: #FFF5EE ridge 1px;
+}
 
 div.field, div.actions {
   margin-bottom: 10px;
 }
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    right: 50px;
+}
+
+#menu1 {
+    #display: inline-block;
+    text-color: red;
+    #padding: 8px 5px 0;
+    height: 2.75em;
+}
+
+#menu1 ul {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+#menu1 il {
+    display: inline;
+}
+
+#menu1 a {
+    float: left;
+    width: 4em;
+    color: #448;
+    text-align: center;
+    background-color: #DADADD;
+    padding: 0.2em 0.4em;
+    border-right: #EEEEEF solid;
+}
+
+#menu1 a.hover {
+    color: red;
+    background-color: red;
+}
+
+
+/* notices and errors */
 
 #notice {
   color: green;
@@ -54,3 +109,37 @@ div.field, div.actions {
   font-size: 12px;
   list-style: square;
 }
+
+
+/* tables */
+
+table.tablesorter {
+    background-color: #CDCDCD;
+    #font-size: 8pt;
+    text-align: center;
+    border: 1px solid #FFF;
+}
+
+table.tablesorter thead tr {
+    padding: 4px;
+    cursor: pointer;
+}
+
+table.tablesorter tbody td {
+    padding: 4px;
+    background-color: #AAA;
+    font-color: #ccc;
+}
+
+table.tablesorter tbody tr.odd td {
+    background-color: #FFF;
+}
+
+table.tablesorter thead tr .headerSortUp {
+    background-color: #bbb;
+}
+
+table.tablesorter thead tr .headerSortDown {
+    background-color: #ddd;
+}
+

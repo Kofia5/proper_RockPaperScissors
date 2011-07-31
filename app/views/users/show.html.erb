@@ -1,5 +1,6 @@
-<p id="notice"><%= notice %></p>
+<h2><%= @user.username %>'s Profile</h2>
 
+<div class='container'>
 <p>
   <b>Username:</b>
   <%= @user.username %>
@@ -87,34 +88,40 @@
 </p>
 
 <% end %>
+</div>
 
 <p id='rounds'>
-  <b>Last 10 rounds</b>
+  <h3>Last 10 rounds played</h3>
 
-  <table>
-    <tr>
-      <th>Result:</th>
-      <th>Opponent:</th>
-      <th><%= @user.username %> played:</th>
-      <th>Opponent played:</th>
-    </tr>
-
-  <% @rounds.each do |round| %>
-    <% curGame = Game.find(round.game_id) %>
-    <% isOne = curGame.player1 == @user.stats.id %>
-    <tr>
-      <td><%= round.winner == -1 ? '-' : (((round.winner == 1) && isOne) or ((round.winner == 2) &&  !isOne)) ? 'Win' : 'Loss' %></td>
-      <td><%= isOne ? Stats.find(curGame.player2).user.username : Stats.find(curGame.player1).user.username %></td>
-      <td><%= isOne ? @throw_names[round.player1] : @throw_names[round.player2] %></td>
-      <td><%= isOne ? @throw_names[round.player2] : @throw_names[round.player1] %></td>
+  <table id="roundsTable" class="tablesorter">
+    <thead>
+      <tr>
+	<th>Result</th>
+	<th>Opponent</th>
+	<th><%= @user.username %> played</th>
+	<th>Opponent played</th>
       </tr>
-  <% end %>
+    </thead>
+    <tbody>
+      <% @rounds.each do |round| %>
+      <% curGame = Game.find(round.game_id) %>
+      <% isOne = curGame.player1 == @user.stats.id %>
+      <% player1 = Stats.find(curGame.player1).user %>
+      <% player2 = Stats.find(curGame.player2).user %>
+      <tr>
+	<% if isOne %>
+	<td><%= round.winner == -1 ? '_' : (round.winner == 1 ? 'Win' : 'Loss') %></td>
+	<td><%= link_to player2.username, player2 %></td>
+	<td><%= @throw_names[round.player1] %></td>
+	<td><%= @throw_names[round.player2] %></td>
+	<% else %>
+	<td><%= round.winner == -1 ? '_' : (round.winner == 2 ? 'Win' : 'Loss') %></td>
+	<td><%= link_to player1.username, player1 %></td>
+	<td><%= @throw_names[round.player2]%></td>
+	<td><%= @throw_names[round.player1] %></td>
+	<% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
 </p>
-
-
-
-<% if @current_user %>
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<% end %>
-
-<%= link_to 'Leaderboard', users_path %>

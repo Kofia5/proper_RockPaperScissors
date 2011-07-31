@@ -1,46 +1,35 @@
-<p id="notice"><%= notice %></p>
+<h2>Listing <%= @user.username %>'s <%= @header_option %></h2>
 
-<h1>Listing <%= @user.username %>'s <%= @header_option %></h1>
+<table id="gamesTable" class="tablesorter">
+  <thead>
+    <tr>
+      <th>Winner</th>
+      <th>Player 1</th>
+      <th>Player 2</th>
+      <th>Number of Rounds Played</th>
+      <th>Max Rounds</th>
+      <th>Game Played at</th>
+      <% if @current_user %>
+      <th></th>
+      <th></th>
+      <% end %>
+    </tr>
+  </thead>
 
-<table>
-  <tr>
-    <th>Winner</th>
-    <th>Player 1</th>
-    <th>Player 2</th>
-    <th>Number of Rounds Played</th>
-    <th>Max Rounds</th>
-    <th>Game Played at</th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @games.each do |game| %>
-  <tr>
-    <td><%= Stats.find(game.winner).user.username %></td>
-    <td><%= Stats.find(game.player1).user.username %></td>
-    <td><%= Stats.find(game.player2).user.username %></td>
-    <td><%= game.rounds_played %></td>
-    <td><%= game.total_rounds %></td>
-    <td><%= link_to game.updated_at, game %></td>
-    <td><%= link_to 'Edit', edit_game_path(game) %></td>
-    <td><%= link_to 'Destroy', game, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+  <tbody>
+    <% @games.each do |game| %>
+    <tr>
+      <td><%= Stats.find(game.winner).user.username %></td>
+      <td><%= Stats.find(game.player1).user.username %></td>
+      <td><%= Stats.find(game.player2).user.username %></td>
+      <td><%= game.rounds_played %></td>
+      <td><%= game.total_rounds %></td>
+      <td><%= link_to game.updated_at, game %></td>
+      <% if @current_user %>
+      <td><%= link_to 'Edit', edit_game_path(game) %></td>
+      <td><%= link_to 'Destroy', game, :confirm => 'Are you sure?', :method => :delete %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </tbody>
 </table>
-
-<br />
-
-
-<% if @current_user.nil? %>
-<%= link_to 'New User', new_user_path %>
- |
-<%= link_to 'Login', new_user_session_path %>
-
-<% else %>
-<%= link_to 'Play a Game?', games_path, :method => :setup %>
- |
-<%= link_to 'Logout', user_session_path, :method => :delete %>
-
-<% end %>
- |
-<%= link_to 'Leaderboard', users_path %>

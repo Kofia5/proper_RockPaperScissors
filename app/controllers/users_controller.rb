@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new, :create]
   before_filter :require_user, :only => [:edit, :update, :destroy]
+  before_filter :current_user
 
   # GET /users
   # GET /users.xml
   def index
-    current_user
     @users = User.all
 
     respond_to do |format|
@@ -17,7 +17,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
-    current_user
     @user = params[:id] ? User.find(params[:id]) : @current_user
     @rounds = @user.rounds(10,true)
     @throw_names = Game::THROW_OPTIONS.invert
@@ -97,37 +96,34 @@ class UsersController < ApplicationController
   end
 
   def list_games
-    current_user
-    @header_option = 'games'
     @user = User.find(params[:id])
+    @header_option = 'games'
     @games = @user.games
 
     respond_to do |format|
-      format.html { render :action => 'list_games' }
+      format.html { render "games/index" }
       format.xml  { head :ok }
     end
   end
 
   def list_wins
-    current_user
     @header_option = 'wins'
     @user = User.find(params[:id])
     @games = @user.games_won
 
     respond_to do |format|
-      format.html { render :action => 'list_games' }
+      format.html { render "games/index" }
       format.xml  { head :ok }
     end
   end
 
   def list_losses
-    current_user
     @header_option = 'losses'
     @user = User.find(params[:id])
     @games = @user.games_lost
 
     respond_to do |format|
-      format.html { render :action => 'list_games' }
+      format.html { render "games/index" }
       format.xml  { head :ok }
     end
   end

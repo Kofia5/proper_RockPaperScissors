@@ -6,12 +6,15 @@
 </p>
 
 <p>
+  <%= link_to "Game Details", @game %>
+</p>
+
+</br>
+
+<p>
 <%= form_for @game do |f| %>
   <%= f.select :playRound, Game::THROW_OPTIONS %>
   
   <%= f.submit %>
 <% end %> 
 </p>
-
-</br>
-<%= link_to "List of Games", games_path %>

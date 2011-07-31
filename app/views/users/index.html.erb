@@ -1,6 +1,7 @@
-<h1>Leaderboard</h1>
+<h2>Leaderboard</h2>
 
-<table>
+<table id="usersTable" class="tablesorter">
+  <thead>
   <tr>
     <th>Username</th>
     <th>Wins</th>
@@ -12,7 +13,8 @@
     <th></th>
     <% end %>
   </tr>
-
+  </thead>
+  <tbody>
 <% @users.each do |user| %>
   <tr>
     <td><%= link_to user.username, user %></td>
@@ -27,24 +29,5 @@
     <% end %>
   </tr>
 <% end %>
+  </tbody>
 </table>
-
-</br>
-
-<div id=user_options>
-<% if @current_user %>
-<%= link_to 'Play a Game?', "/games/setup" %>
- |
-<%= link_to 'Logout', user_session_path, :method => :delete %>
-
-
-<% else %>
-<%= link_to 'Register New User', new_user_path %>
- |
-<%= link_to 'Login', new_user_session_path %>
-
-<% end %>
- |
-<%= link_to "List of Games", games_path %>
-
-</div>

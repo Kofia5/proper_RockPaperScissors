@@ -1,10 +1,6 @@
-<h1>Login</h1>
+<h2>Login</h2>
 
 <%= form_for @user_session, :url => user_session_path do |f| %>
   <%= render :partial => 'form', :object => f %>
   <%= f.submit "Login" %>
 <% end %>
-
-<%= link_to 'Register New User', new_user_path %>
- |
-<%= link_to 'Leaderboard', users_path %>

@@ -1,16 +1,17 @@
-<p id="notice"><%= notice %></p>
+<h2>Game Details</h2>
 
+<div class='container'>
 <p>
   <b>Winner:</b>
-  <%= @winner %>
+  <%= link_to @winner.username, @winner %>
 </p>
 
 <p>
   <b>Players:</b>
-  </br>
-  <%= @player1 %>
-  </br>
-  <%= @player2 %>
+  <ul>
+    <li><%= link_to @player1.username, @player1 %></li>
+    <li><%= link_to @player2.username, @player2 %></li>
+  </ul>
 </p>
 
 <p>
@@ -23,25 +24,31 @@
   <%= @game.total_rounds %>
 </p>
 
+</div>
+
 <p>
-  <b>Rounds:</b>
-  <table>
-    <tr>
-      <th>Round #</th>
-      <th>Winner</th>
-      <th><%= @player1 %> played</th>
-      <th><%= @player2 %> played</th>
-    </tr>
-    
-    <% @rounds.each do |round| %>
-    <tr>
-      <th><%= round.num_round %></th>
-      <th><%= round.winner < 0 ? '-' : round.winner == 1 ? @player1 : @player2 %></th>
-      <th><%= @throw_names[round.player1] %></th>
-      <th><%= @throw_names[round.player2] %></th>
-    </tr>
-    <% end %>
+  <h3>Rounds:</h3>
+
+  <table id="roundsTable" class="tablesorter">
+    <thead>
+      <tr>
+	<th>Round #</th>
+	<th>Winner</th>
+	<th><%= @player1.username %> played</th>
+	<th><%= @player2.username %> played</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @rounds.each do |round| %>
+      <tr>
+	<td><%= round.num_round %></td>
+	<td><%= round.winner < 0 ? '_' : (round.winner == 1 ? (link_to @player1.username, @player1) : (link_to @player2.username, @player2) ) %></td>
+	<td><%= @throw_names[round.player1] %></td>
+	<td><%= @throw_names[round.player2] %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
 </p>
-
-
-<%= link_to 'Back', games_path %>

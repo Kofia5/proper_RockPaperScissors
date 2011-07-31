@@ -1,10 +1,11 @@
 class GamesController < ApplicationController
 
   before_filter :require_user, :only => [:setup, :update, :play, :destroy]
+  before_filter :current_user
 
   def index
-    current_user
     @games = Game.order('updated_at DESC')
+    @header_option = "all games"
   end
 
   def new
@@ -17,9 +18,9 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    @winner = Stats.find(@game.winner).user.username
-    @player1 = Stats.find(@game.player1).user.username
-    @player2 = Stats.find(@game.player2).user.username
+    @winner = Stats.find(@game.winner).user
+    @player1 = Stats.find(@game.player1).user
+    @player2 = Stats.find(@game.player2).user
     @rounds = @game.rounds.order('rounds.id ASC')
     @throw_names = Game::THROW_OPTIONS.invert
   end
@@ -54,7 +55,6 @@ class GamesController < ApplicationController
   end
 
   def setup
-    current_user
     @user = @current_user
     @player1 = @user.stats.id
     @game = Game.new(:player1 => @player1)
