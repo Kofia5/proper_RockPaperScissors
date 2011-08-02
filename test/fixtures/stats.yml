@@ -3,9 +3,9 @@
 one:
   wins: 1
   games_played: 1
-  user: 
+  user_id: 1
 
 two:
   wins: 1
   games_played: 1
-  user: 
+  user_id: 2

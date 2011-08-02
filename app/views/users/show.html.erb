@@ -26,6 +26,24 @@
   <%= link_to @user.stats.games_played, list_games_user_path(@user) %>
 </p>
 
+<p>
+  <b>Rocks:</b>
+  <%= @user.stats.rocks %> 
+  ( <%= ((@user.stats.rocks / @total_throws)*100).round(3) %>% )
+</p>
+
+<p>
+  <b>Papers:</b>
+  <%= @user.stats.papers %> 
+  ( <%= ((@user.stats.papers / @total_throws)*100).round(3) %>% )
+</p>
+
+<p>
+  <b>Scissors:</b>
+  <%= @user.stats.scissors %> 
+  ( <%= ((@user.stats.scissors / @total_throws)*100).round(3) %>% )
+</p>
+
 <% if @current_user == @user%>
 <p>
   <b>Crypted password:</b>
@@ -100,6 +118,7 @@
 	<th>Opponent</th>
 	<th><%= @user.username %> played</th>
 	<th>Opponent played</th>
+	<th>Current Score (in this game)</th>
       </tr>
     </thead>
     <tbody>
@@ -114,11 +133,13 @@
 	<td><%= link_to player2.username, player2 %></td>
 	<td><%= @throw_names[round.player1] %></td>
 	<td><%= @throw_names[round.player2] %></td>
+	<td><%= round.curScore1 %> - <%= round.curScore2 %></td>
 	<% else %>
 	<td><%= round.winner == -1 ? '_' : (round.winner == 2 ? 'Win' : 'Loss') %></td>
 	<td><%= link_to player1.username, player1 %></td>
 	<td><%= @throw_names[round.player2]%></td>
 	<td><%= @throw_names[round.player1] %></td>
+	<td><%= round.curScore2 %> - <%= round.curScore1 %></td>
 	<% end %>
       </tr>
       <% end %>

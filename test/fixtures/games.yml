@@ -1,13 +1,15 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  num_rounds: 1
+  rounds_played: 5
+  total_rounds: 5
   winner: 1
   player1: 1
-  playerA: 1
+  player2: 1
 
 two:
-  num_rounds: 1
+  rounds_played: 1
+  total_rounds: 3
   winner: 1
   player1: 1
-  playerA: 1
+  player2: 1

@@ -1,11 +1,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  game: 
-  pOne: 1
-  pA: 1
+  game_id: 1 
+  winner: 2
+  player1: 1
+  player2: 0
 
 two:
-  game: 
-  pOne: 1
-  pA: 1
+  game_id: 1
+  winner: 1
+  player1: 2
+  player2: 1

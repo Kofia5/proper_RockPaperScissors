@@ -18,6 +18,9 @@ class UsersController < ApplicationController
   # GET /users/1.xml
   def show
     @user = params[:id] ? User.find(params[:id]) : @current_user
+    @total_throws = (@user.stats.rocks + @user.stats.papers + 
+      @user.stats.scissors) * 1.0
+    @total_throws = @total_throws == 0 ? 1 : @total_throws
     @rounds = @user.rounds(10,true)
     @throw_names = Game::THROW_OPTIONS.invert
     respond_to do |format|

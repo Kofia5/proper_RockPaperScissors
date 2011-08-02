@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110730150554) do
+ActiveRecord::Schema.define(:version => 20110801195750) do
 
   create_table "games", :force => true do |t|
     t.integer  "rounds_played"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(:version => 20110730150554) do
     t.integer  "player2",    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "curScore1"
+    t.integer  "curScore2"
   end
 
   add_index "rounds", ["game_id"], :name => "index_rounds_on_game_id"
@@ -59,7 +61,12 @@ ActiveRecord::Schema.define(:version => 20110730150554) do
     t.integer  "user_id",                     :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "rocks",        :default => 0, :null => false
+    t.integer  "papers",       :default => 0, :null => false
+    t.integer  "scissors",     :default => 0, :null => false
   end
+
+  add_index "stats", ["user_id"], :name => "index_stats_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "username",                           :null => false

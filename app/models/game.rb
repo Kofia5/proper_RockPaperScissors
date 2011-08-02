@@ -48,6 +48,12 @@ class Game < ActiveRecord::Base
     curRound = 1
     @pointsFor1 = 0
     @pointsFor2 = 0
+    rocks1 = 0
+    papers1 = 0
+    scissors1 = 0
+    rocks2 = 0
+    papers2 = 0
+    scissors2 = 0
     winIn = (total_rounds / 2) + 1
     @tied = false
 
@@ -57,30 +63,55 @@ class Game < ActiveRecord::Base
       pick2 = rand(3)
 
       case pick1
-      when 0 then case pick2 #rock
-                  when 0 then tie(pick1,pick2)
-                  when 1 then win2(pick1,pick2)
-                  when 2 then win1(pick1,pick2)
-                  else #fail
-                  end
-      when 1 then case pick2 #paper
-                  when 0 then win1(pick1,pick2)
-                  when 1 then tie(pick1,pick2)
-                  when 2 then win2(pick1,pick2)
-                  else #fail
-                  end
-      when 2 then case pick2 #scissor
-                  when 0 then win2(pick1,pick2)
-                  when 1 then win1(pick1,pick2)
-                  when 2 then tie(pick1,pick2)
-                  else #fail
-                  end
+      when 0 then 
+        rocks1 += 1
+        case pick2 #rock
+        when 0 then 
+          rocks2 += 1
+          tie(pick1,pick2)
+        when 1 then 
+          papers2 += 1
+          win2(pick1,pick2)
+        when 2 then 
+          scissors2 += 1
+          win1(pick1,pick2)
+        else #fail
+        end
+      when 1 then
+        papers1 += 1
+        case pick2 #paper
+        when 0 then 
+          rocks2 += 1
+          win1(pick1,pick2)
+        when 1 then 
+          papers2 += 1
+          tie(pick1,pick2)
+        when 2 then 
+          scissors2 += 1
+          win2(pick1,pick2)
+        else #fail
+        end
+      when 2 then 
+        scissors1 += 1
+        case pick2 #scissor
+        when 0 then 
+          rocks2 += 1
+          win2(pick1,pick2)
+        when 1 then 
+          papers2 += 1
+          win1(pick1,pick2)
+        when 2 then 
+          scissors2 += 1
+          tie(pick1,pick2)
+        else #fail
+        end
       else #fail
       end
 
       rounds.build(:num_round => curRound, 
                    :winner => @roundWin, :player1 => @throw1,
-                   :player2 => @throw2)
+                   :player2 => @throw2, :curScore1 => @pointsFor1,
+                   :curScore2 => @pointsFor2)
       if not @tied
         if curRound >= total_rounds or @pointsFor1 >= winIn or 
            @pointsFor2 >= winIn
@@ -94,26 +125,46 @@ class Game < ActiveRecord::Base
     if @pointsFor1 > @pointsFor2
       @winner = @player1
       @loser = @player2
+      @win = Stats.find(@winner)
+      @loss = Stats.find(@loser)
+      
+      @win.rocks += rocks1
+      @win.papers += papers1
+      @win.scissors += scissors1
+      @loss.rocks += rocks2
+      @loss.papers += papers2
+      @loss.scissors += scissors2
     else
       @winner = @player2
       @loser = @player1
-    end  
+      @win = Stats.find(@winner)
+      @loss = Stats.find(@loser)
+
+      @win.rocks += rocks2
+      @win.papers += papers2
+      @win.scissors += scissors2
+      @loss.rocks += rocks1
+      @loss.papers += papers1
+      @loss.scissors += scissors1
+    end
 
     update_attributes(:player2 => @player2, :winner => @winner, 
                       :total_rounds => total_rounds, :rounds_played => curRound)
-    save
+    if save
 
 
-    #TODO - add users to game after the game is played
-    @win = Stats.find(@winner)
-    @win.win
-    @win.games << self
-    @loss = Stats.find(@loser)
-    @loss.loss
-    @loss.games << self
+      #TODO - add users to game after the game is played
+      
+      @win.win
+      @win.games << self
+      
+      @loss.loss
+      @loss.games << self
 
-    @win.save
-    @loss.save
+      @win.save
+      @loss.save
+    end
+
   end
 
 

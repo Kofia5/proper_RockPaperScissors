@@ -36,6 +36,7 @@
 	<th>Winner</th>
 	<th><%= @player1.username %> played</th>
 	<th><%= @player2.username %> played</th>
+	<th>Current Score</th>
       </tr>
     </thead>
 
@@ -46,6 +47,7 @@
 	<td><%= round.winner < 0 ? '_' : (round.winner == 1 ? (link_to @player1.username, @player1) : (link_to @player2.username, @player2) ) %></td>
 	<td><%= @throw_names[round.player1] %></td>
 	<td><%= @throw_names[round.player2] %></td>
+	<td><%= round.curScore1 %> - <%= round.curScore2 %></td>
       </tr>
       <% end %>
     </tbody>
