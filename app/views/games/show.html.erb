@@ -2,16 +2,15 @@
 
 <div class='container'>
 <p>
-  <b>Winner:</b>
-  <%= link_to @winner.username, @winner %>
+  <b>Players:</b>
+    <%= link_to @player1.username, @player1 %>
+	  vs.
+	<%= link_to @player2.username, @player2 %>
 </p>
 
 <p>
-  <b>Players:</b>
-  <ul>
-    <li><%= link_to @player1.username, @player1 %></li>
-    <li><%= link_to @player2.username, @player2 %></li>
-  </ul>
+  <b>Winner:</b>
+  <%= link_to @winner.username, @winner %>
 </p>
 
 <p>

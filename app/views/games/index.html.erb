@@ -9,8 +9,8 @@
       <th>Winner</th>
       <th>Player 1</th>
       <th>Player 2</th>
-      <th>Number of Rounds Played</th>
-      <th>Max Rounds</th>
+      <th>Best of</th>
+	  <th>Rounds Played</th>
       <th>Game Played at</th>
       <% if @current_user %>
       <th></th>
@@ -28,8 +28,8 @@
       <td><%= link_to winner.username, winner  %></td>
       <td><%= link_to player1.username, player1 %></td>
       <td><%= link_to player2.username, player2 %></td>
-      <td><%= game.rounds_played %></td>
       <td><%= game.total_rounds %></td>
+	  <td><%= game.rounds_played %></td>	
       <td><%= link_to game.updated_at, game %></td>
       <% if @current_user %>
       <td><%= link_to 'Edit', edit_game_path(game) %></td>

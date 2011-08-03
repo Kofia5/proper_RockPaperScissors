@@ -25,7 +25,7 @@
 </head>
 
 <body>
-  <header class='container'>
+  <header>
     <%= render "shared/header" %>
   </header>
 
@@ -33,15 +33,15 @@
     <p><%= notice %></p>
   </div>
 
+  <div class="sidebar">
+    <%= render "shared/sidebar" %>
+  </div>
+  
    <div>
      <%= yield %>
    </div>
 
-   <div class="sidebar">
-     <%= render "shared/sidebar" %>
-   </div>
-
-   <footer class='container'>
+   <footer>
      <%= render "shared/footer" %>
    </footer>
 

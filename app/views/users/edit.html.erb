@@ -9,5 +9,5 @@
   <%= render :partial => 'form', :object => f %>
   <%= f.submit "Save Changes" %>
 <% end %>
-<%= button_to 'Do Not Save Changes', :back %>
+<%= button_to 'Do Not Save Changes', :back, :method => :get %>
 </div>

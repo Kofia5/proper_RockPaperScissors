@@ -18,7 +18,7 @@ ProperRockPaperScissors::Application.routes.draw do
   match 'login' => 'user_sessions#new', :as => :login
   match 'logout' => 'user_sessions#destroy', :as => :logout
   resource :user_session
-  root :controller => "stats", :action => "show"
+  #root :controller => "stats", :action => "show"
   root :controller => "user_sessions", :action => "new"
 
 
@@ -72,7 +72,7 @@ ProperRockPaperScissors::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => "users#index"
+  #root :to => 'users'
 
   # See how all your routes lay out with "rake routes"
 

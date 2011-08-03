@@ -10,7 +10,7 @@ class StatsController < ApplicationController
 
   def show
     current_user
-    @user = @current_user
+    @user = @current_user ? @current_user : User.find(rand(User.count)+1)
     
     respond_to do |format|
       format.html # show.html.erb

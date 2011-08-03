@@ -6,7 +6,6 @@ body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size:   14px;
   line-height: 18px;
-  #width: 500px;
 }
 
 h1 {
@@ -19,9 +18,10 @@ pre {
   font-size: 11px;
 }
 
-a { color: #000; }
+a { color: #44445A; }
 a:visited { color: #555; }
-a:hover { color: red; #background-color:#000; }
+a:hover { color: #50C; background-color:#dedede; }
+a:active { color: #49B; background-color:#efefef; }
 
 .container {
     padding: 0 50px 0 50px;
@@ -34,14 +34,16 @@ div.field, div.actions {
 
 .sidebar {
     position: absolute;
-    top: 0;
-    right: 50px;
+    top: 0%;
+    left: 80%;
+	#margin: .5em;
+	width: 20%;
 }
 
 #menu1 {
     #display: inline-block;
     text-color: red;
-    #padding: 8px 5px 0;
+    padding: .33em .5em .33em .5em;
     height: 2.75em;
 }
 
@@ -59,17 +61,44 @@ div.field, div.actions {
 
 #menu1 a {
     float: left;
-    width: 4em;
-    color: #448;
+    width: 15%;
+	font-size: medium;
+    color: #eee;
     text-align: center;
-    background-color: #DADADD;
+    background-color: #aac;
     padding: 0.2em 0.4em;
-    border-right: #EEEEEF solid;
+    border-left: #dde solid .33em;
+    border-right: #dde solid .33em;
 }
 
-#menu1 a.hover {
-    color: red;
-    background-color: red;
+
+#menu1 a:visited {
+    color: green;
+    background-color: #333;
+}
+
+#menu1 a:hover {
+    color: #aac;
+    background-color: #eee;
+}
+
+#menu1 a:active {
+    color: #00b;
+    background-color: #fff;
+}
+
+
+header {
+	color: #333;
+	width: 90%;
+	text-align: center;
+}
+
+
+footer {
+	color: #777;
+	width: 100%;
+	text-align: right; 
 }
 
 
@@ -117,29 +146,37 @@ table.tablesorter {
     background-color: #CDCDCD;
     #font-size: 8pt;
     text-align: center;
-    border: 1px solid #FFF;
+    border: 2px solid #F5F5F5;
 }
 
 table.tablesorter thead tr {
-    padding: 4px;
+    padding: 2em;
     cursor: pointer;
 }
 
-table.tablesorter tbody td {
-    padding: 4px;
-    background-color: #AAA;
-    font-color: #ccc;
+table.tablesorter thead th {
+    padding: .1em .3em .1em .3em;
+	border-left: 1px dotted #F5F5F5;
+	border-right: 1px dotted #F5F5F5;
 }
 
-table.tablesorter tbody tr.odd td {
-    background-color: #FFF;
+table.tablesorter tbody td {
+    background-color: #AAA;
+    #color: #ccc;
+	border-left: 1px dotted #F5F5F5;
+	border-right: 1px dotted #F5F5F5;
+
+}
+
+table.tablesorter tbody tr.even td {
+    background-color: blue; #not working...
 }
 
 table.tablesorter thead tr .headerSortUp {
-    background-color: #bbb;
+    background-color: #bebebe;
 }
 
 table.tablesorter thead tr .headerSortDown {
-    background-color: #ddd;
+    background-color: #e5e5e5;
 }
 
