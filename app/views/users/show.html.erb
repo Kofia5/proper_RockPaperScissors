@@ -1,3 +1,7 @@
+<% content_for :title do %>
+: <%= @user.username %>'s Profile
+<% end %>
+
 <h2><%= @user.username %>'s Profile</h2>
 
 <div class='container'>
@@ -12,64 +16,18 @@
 </p>
 
 <p>
-  <b>Wins:</b>
-  <%= link_to @user.stats.wins, list_wins_user_path(@user) %>
+  <b>Record:</b>
+  <%= link_to @user.stats.wins, list_wins_user_path(@user), :style => @style1 %>
+  - 
+  <%= link_to (@user.stats.games_played - @user.stats.wins), list_losses_user_path(@user), :style => @style2 %>
 </p>
 
 <p>
-  <b>Losses:</b>
-  <%= link_to (@user.stats.games_played - @user.stats.wins), list_losses_user_path(@user) %>
-</p>
-
-<p>
-  <b>Games Played:</b>
+  <b>Total Games Played:</b>
   <%= link_to @user.stats.games_played, list_games_user_path(@user) %>
 </p>
 
-<p>
-  <b>Rocks:</b>
-  <%= @user.stats.rocks %> 
-  ( <%= ((@user.stats.rocks / @total_throws)*100).round(3) %>% )
-</p>
-
-<p>
-  <b>Papers:</b>
-  <%= @user.stats.papers %> 
-  ( <%= ((@user.stats.papers / @total_throws)*100).round(3) %>% )
-</p>
-
-<p>
-  <b>Scissors:</b>
-  <%= @user.stats.scissors %> 
-  ( <%= ((@user.stats.scissors / @total_throws)*100).round(3) %>% )
-</p>
-
 <% if @current_user == @user%>
-<p>
-  <b>Crypted password:</b>
-  <%= @user.crypted_password %>
-</p>
-
-<p>
-  <b>Password salt:</b>
-  <%= @user.password_salt %>
-</p>
-
-<p>
-  <b>Persistence token:</b>
-  <%= @user.persistence_token %>
-</p>
-
-<p>
-  <b>Single access token:</b>
-  <%= @user.single_access_token %>
-</p>
-
-<p>
-  <b>Perishable token:</b>
-  <%= @user.perishable_token %>
-</p>
-
 <p>
   <b>Login count:</b>
   <%= @user.login_count %>
@@ -108,6 +66,43 @@
 <% end %>
 </div>
 
+<p id='throws'>
+  <h3>Throw history</h3>
+
+  <table id='throwTable' class='tablesorter'>
+    <thead>
+      <tr>
+	<th>Rocks</th>
+	<th>Papers</th>
+	<th>Scissors</th>
+	<th>Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+	<td><%= @user.stats.rocks %></td>
+	<td><%= @user.stats.papers %></td>
+	<td><%= @user.stats.scissors %></td>
+	<td><%= @total_throws %></td>
+      </tr>
+      <tr>
+	<td>
+	  <%= number_to_percentage(@rock_percent) %>
+	</td>
+	<td>
+	  <%= number_to_percentage(@paper_percent) %>
+	</td>
+	<td>
+	  <%= number_to_percentage(@scissor_percent) %>
+	</td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</p>
+
 <p id='rounds'>
   <h3>Last 10 rounds played</h3>
 
@@ -118,7 +113,7 @@
 	<th>Opponent</th>
 	<th><%= @user.username %> played</th>
 	<th>Opponent played</th>
-	<th>Current Score (in this game)</th>
+	<th>Current Game Score</th>
       </tr>
     </thead>
     <tbody>
@@ -127,14 +122,20 @@
       <% isOne = curGame.player1 == @user.stats.id %>
       <% player1 = Stats.find(curGame.player1).user %>
       <% player2 = Stats.find(curGame.player2).user %>
-      <tr>
-	<% if isOne %>
+	
+      <% if isOne %>
+      <tr <%= round.winner == 1 ? "style="+@style1 : 
+	     (round.winner == 2 ? "style="+@style2 : "") %>
+	  >
 	<td><%= round.winner == -1 ? '_' : (round.winner == 1 ? 'Win' : 'Loss') %></td>
 	<td><%= link_to player2.username, player2 %></td>
 	<td><%= @throw_names[round.player1] %></td>
 	<td><%= @throw_names[round.player2] %></td>
 	<td><%= round.curScore1 %> - <%= round.curScore2 %></td>
-	<% else %>
+      <% else %>
+      <tr <%= round.winner == 1 ? "style="+@style2 : 
+	      (round.winner == 2 ? "style="+@style1 : "") %>
+	  >
 	<td><%= round.winner == -1 ? '_' : (round.winner == 2 ? 'Win' : 'Loss') %></td>
 	<td><%= link_to player1.username, player1 %></td>
 	<td><%= @throw_names[round.player2]%></td>

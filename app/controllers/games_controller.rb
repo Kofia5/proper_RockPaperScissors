@@ -4,16 +4,36 @@ class GamesController < ApplicationController
   before_filter :current_user
 
   def index
-    @games = Game.order('updated_at DESC')
+    @games = Game.where('winner IS NOT null')
     @header_option = "all games"
   end
 
   def new
-    setup
+    @user = @current_user
+    @player1 = @user.stats.id
+    @game = Game.new
+    session[:game] = @game
+    respond_to do |format|
+      format.html { render 'new' }
+      format.xml { render :xml => @game, :status => :created, :location => :@game }
+    end
   end
 
   def create
-    setup
+    @user = @current_user
+    @player1 = @user.stats.id
+    @game = session[:game]
+    @options = params[:game]
+    @player2 = User.find_by_username('theAI').stats.id
+    @game.update_attributes(:player1 => @player1, :player2 => @player2, 
+                            :total_rounds => @options[:total_rounds])
+#    @game.init
+    session[:game] = @game.id
+    #@throw_names = Game::THROW_OPTIONS.invert
+    respond_to do |format|
+      format.html { redirect_to :action => :playRound }
+      format.xml { render :xml => @game, :status => :created, :location => :@game }
+    end
   end
 
   def show
@@ -23,19 +43,35 @@ class GamesController < ApplicationController
     @player2 = Stats.find(@game.player2).user
     @rounds = @game.rounds.order('rounds.id ASC')
     @throw_names = Game::THROW_OPTIONS.invert
+    @style1 = 'background-color:#AAE'
+    @style2 = 'background-color:#AEA'
   end
 
   def edit
-
+    @game = Game.find(session[:game])
   end
 
   def update
-    @game = Game.find(params[:id])
+    @game = Game.find(session[:game])
 
-    @game.playRound(params[:playRound])
+#    @throw_names = Game::THROW_OPTIONS.invert
+
+    respond_to do |format|
+      if @game.play_round(params[:game])
+        format.html { redirect_to(:action => :play)
+        #redirect_to '/games#play' 
+        }
+        format.xml  { head :ok }
+      else
+        format.html { redirect_to(:action => :playRound)
+          #render :playRound
+        }
+        format.xml  { head :ok  }
+      end
+    end
     #respond_to do |format|
     #  if @game.update_attributes(params[:game])
-    #    format.html { redirect_to(@gamer, :notice => 'Game was successfully updated.') }
+    #    format.html { redirect_to(@game, :notice => 'Game was successfully updated.') }
     #    format.xml  { head :ok }
     #  else
     #    format.html { render :action => "edit" }
@@ -49,7 +85,7 @@ class GamesController < ApplicationController
     @game.destroy
 
     respond_to do |format|
-      format.html { redirect_to(:back, :notice => "Game successfully deleted") }
+      format.html { redirect_to(:index, :notice => "Game successfully deleted") }
       format.xml  { head :ok }
     end
   end
@@ -66,19 +102,20 @@ class GamesController < ApplicationController
   end
 
   def play
-    @game = session[:game]
-    @game.play(params[:game])
+    @game = Game.find(session[:game])
+    #@game.play()
 
     session[:game] = nil
   end
 
   def playRound
-    @user = session[:user]
-    @game = session[:game]
-    @game.play_round(params[:game])
-    
+    @user = @current_user
+    @game = Game.find(session[:game])
+    @throw_names = Game::THROW_OPTIONS.invert
+
+    #session[:game] = @game.id
     respond_to do |format|
-      format.html { render 'play' }
+      format.html { render 'playRound' }
       format.xml { render :xml => @game, :status => :roundplayed, :location => :@game }
     end
   end

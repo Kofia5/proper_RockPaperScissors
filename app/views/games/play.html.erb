@@ -1,8 +1,16 @@
+<% content_for :title do %>
+: Game Over:  "<%= Stats.find(@game.winner).user.username %>" wins
+<% end %>
+
 <h1>Game#play</h1>
 <p>Find me in app/views/game/play.html.erb</p>
 
 <p>User " <%= Stats.find(@game.winner).user.username %> " wins (in 
-<%= @game.rounds_played %> rounds out of a possible <%= @game.total_rounds %>)!
+<%= @game.rounds_played %> of <%= @game.total_rounds %> rounds)!
+</p>
+
+<p>Final score:
+  <%= @game.score1 %> - <%= @game.score2 %>
 </p>
 
 <p>
@@ -11,10 +19,3 @@
 
 </br>
 
-<p>
-<%= form_for @game do |f| %>
-  <%= f.select :playRound, Game::THROW_OPTIONS %>
-  
-  <%= f.submit %>
-<% end %> 
-</p>

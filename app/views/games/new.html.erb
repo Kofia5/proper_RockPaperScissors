@@ -1,14 +1,20 @@
-<h1>Register</h1>
-<%= form_for @user, :url => account_path do |f| %>
-  <%= render :partial => 'error', :object => f %>
-  <br/>
-  <%= f.label :email %><br/>
-  <%= f.text_field :email %><br/>  
-  <br/>
-  <%= render :partial => 'form', :object => f %>
-  <%= f.submit "Register" %>
+<% content_for :title do %>
+: New Game
 <% end %>
 
-<%= link_to 'Login', new_user_session_path %>
- |
-<%= link_to 'Leaderboard', users_path %>
+<h1>Game#new</h1>
+<p>Find me in app/views/game/new.html.erb</p>
+
+<div class='container'>
+<p>Select Number of Rounds to Play to:
+
+<%= form_for @game, :url => { :action => 'create'} do |f| %>
+  <%= f.number_field :total_rounds, :min => 1, :step => 2, 
+  :placeholder => "Pick an odd number of rounds" %>
+  
+  <%= f.submit %>
+<% end %> 
+
+
+</p>
+</div>

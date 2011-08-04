@@ -1,0 +1,66 @@
+<% content_for :title do %>
+: Round #<%= @game.rounds_played %>
+<% end %>
+
+<h2>Round <%= @game.rounds_played %> of <%= @game.total_rounds %> </h2>
+
+<div class='container'>
+<p>Select Throw to Play :
+
+<%= form_for @game, :method => "put" do |f| %>
+<% @throw_names.each do |throw| %>
+<%= f.label throw[1] %>
+<%= f.radio_button :play_round, throw[0] %>
+</br>
+<% end %>
+  <%= f.submit 'Make Throw' %>
+<% end %> 
+
+</p>
+</div>
+
+<% if !@game.rounds.empty? %>
+
+<%  @player1 = Stats.find(@game.player1).user;
+    @player2 = User.find_by_username('theAI');
+    @rounds = @game.rounds.order('rounds.id DESC')
+    @throw_names = Game::THROW_OPTIONS.invert;
+    @style1 = 'background-color:#AAE';
+    @style2 = 'background-color:#AEA' %>
+
+<div class='container'>
+  <p>
+    <h3>Rounds:</h3>
+    
+    <table id="roundsTable" class="tablesorter">
+      <thead>
+	<tr>
+	  <th>Round #</th>
+	  <th>Winner</th>
+	  <th><%= @player1.username %> played</th>
+	  <th><%= @player2.username %> played</th>
+	  <th>Current Score</th>
+	</tr>
+      </thead>
+      
+      <tbody>
+	<% @rounds.each do |round| %>
+	<tr 
+	   <%= round.winner == 1 ? "style="+@style1 : 
+	       (round.winner == 2 ? "style="+@style2 : "") %>
+	   >
+	  <td><%= round.num_round %></td>
+	  <td><%= round.winner < 0 ? '_' : (round.winner == 1 ? (link_to @player1.username, @player1) : (link_to @player2.username, @player2) ) %></td>
+		  <td><%= @throw_names[round.player1] %></td>
+	  <td><%= @throw_names[round.player2] %></td>
+	<td><%= round.curScore1 %> - <%= round.curScore2 %></td>
+	</tr>
+	<% end %>
+      </tbody>
+    </table>
+    
+  </p>
+  
+</div>
+
+<% end %>

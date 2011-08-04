@@ -1,3 +1,8 @@
+<% content_for :title do %>
+: Listing <%= @user ?  @user.username + "'s" : '' %> 
+  <%= @header_option %>
+<% end %>
+
 <h2>
   Listing <%= @user ? (link_to  @user.username, @user)+"'s" : '' %> 
   <%= @header_option %>
@@ -9,13 +14,9 @@
       <th>Winner</th>
       <th>Player 1</th>
       <th>Player 2</th>
-      <th>Best of</th>
-	  <th>Rounds Played</th>
+      <th>Rounds</th>
+      <th>Final Score</th>
       <th>Game Played at</th>
-      <% if @current_user %>
-      <th></th>
-      <th></th>
-      <% end %>
     </tr>
   </thead>
 
@@ -24,17 +25,14 @@
     <% winner = Stats.find(game.winner).user %>
     <% player1 = Stats.find(game.player1).user %>
     <% player2 = Stats.find(game.player2).user %>
-    <tr>
+    
+    <tr <%= @user ? "style="+(@user == winner ? @style1 : @style2) : "" %> >
       <td><%= link_to winner.username, winner  %></td>
       <td><%= link_to player1.username, player1 %></td>
       <td><%= link_to player2.username, player2 %></td>
-      <td><%= game.total_rounds %></td>
-	  <td><%= game.rounds_played %></td>	
+      <td><%= game.rounds_played %> of <%= game.total_rounds %></td>
+      <td><%= game.score1 %> - <%= game.score2 %></td>
       <td><%= link_to game.updated_at, game %></td>
-      <% if @current_user %>
-      <td><%= link_to 'Edit', edit_game_path(game) %></td>
-      <td><%= link_to 'Destroy', game, :confirm => 'Are you sure?', :method => :delete %></td>
-      <% end %>
     </tr>
     <% end %>
   </tbody>

@@ -42,7 +42,7 @@ div.field, div.actions {
 
 #menu1 {
     #display: inline-block;
-    text-color: red;
+    #text-color: red;
     padding: .33em .5em .33em .5em;
     height: 2.75em;
 }
@@ -62,7 +62,7 @@ div.field, div.actions {
 #menu1 a {
     float: left;
     width: 15%;
-	font-size: medium;
+    font-size: medium;
     color: #eee;
     text-align: center;
     background-color: #aac;
@@ -73,8 +73,8 @@ div.field, div.actions {
 
 
 #menu1 a:visited {
-    color: green;
-    background-color: #333;
+#    color: green;
+#    background-color: #333;
 }
 
 #menu1 a:hover {
@@ -87,25 +87,24 @@ div.field, div.actions {
     background-color: #fff;
 }
 
-
 header {
-	color: #333;
-	width: 90%;
-	text-align: center;
+    color: #333;
+    width: 90%;
+    text-align: center;
 }
 
 
 footer {
-	color: #777;
-	width: 100%;
-	text-align: right; 
+    color: #777;
+    width: 100%;
+    text-align: right; 
 }
 
 
 /* notices and errors */
 
 #notice {
-  color: green;
+  color: #6A6;
 }
 
 .field_with_errors {
@@ -156,20 +155,20 @@ table.tablesorter thead tr {
 
 table.tablesorter thead th {
     padding: .1em .3em .1em .3em;
-	border-left: 1px dotted #F5F5F5;
-	border-right: 1px dotted #F5F5F5;
+    border-left: 1px dotted #F5F5F5;
+    border-right: 1px dotted #F5F5F5;
 }
 
 table.tablesorter tbody td {
-    background-color: #AAA;
+    #background-color: #AAA;
     #color: #ccc;
-	border-left: 1px dotted #F5F5F5;
-	border-right: 1px dotted #F5F5F5;
-
+    border-left: 1px dotted #F5F5F5;
+    border-right: 1px dotted #F5F5F5;
+    
 }
 
-table.tablesorter tbody tr.even td {
-    background-color: blue; #not working...
+table.tablesorter tbody tr {
+    background-color: #AAA; #not working...
 }
 
 table.tablesorter thead tr .headerSortUp {

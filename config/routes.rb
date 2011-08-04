@@ -1,7 +1,9 @@
 ProperRockPaperScissors::Application.routes.draw do
   get "games/setup"
-  post "games/play"
-  post "games/playRound"
+  get "games/play"
+  get "games/playRound"
+  match "games/playRound" => 'games#update'
+
   resources :games do
     resources :rounds
     get 'setup', :on => :member
