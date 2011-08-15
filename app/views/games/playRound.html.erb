@@ -1,32 +1,30 @@
 <% content_for :title do %>
-: Round #<%= @game.rounds_played %>
+: Round #<%= @curRound %>
 <% end %>
 
-<h2>Round <%= @game.rounds_played %> of <%= @game.total_rounds %> </h2>
+<h2>Round <%= @curRound %> of <%= @game.total_rounds %> </h2>
 
 <div class='container'>
 <p>Select Throw to Play :
-
 <%= form_for @game, :method => "put" do |f| %>
+<ul>
 <% @throw_names.each do |throw| %>
+<li>
 <%= f.label throw[1] %>
 <%= f.radio_button :play_round, throw[0] %>
-</br>
+</li>
 <% end %>
-  <%= f.submit 'Make Throw' %>
+</ul>
+<%= f.submit 'Make Throw' %>
 <% end %> 
 
 </p>
 </div>
 
-<% if !@game.rounds.empty? %>
-
-<%  @player1 = Stats.find(@game.player1).user;
-    @player2 = User.find_by_username('theAI');
-    @rounds = @game.rounds.order('rounds.id DESC')
-    @throw_names = Game::THROW_OPTIONS.invert;
-    @style1 = 'background-color:#AAE';
-    @style2 = 'background-color:#AEA' %>
+<% if @curRound > 1 or @game.rounds.count > 0 
+     @player1 = Stats.find(@game.player1).user;
+     @player2 = Stats.find(@game.player2).user;
+     @rounds = @game.rounds.order('rounds.id DESC'); %>
 
 <div class='container'>
   <p>

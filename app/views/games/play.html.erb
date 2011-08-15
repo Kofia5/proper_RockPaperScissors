@@ -1,11 +1,11 @@
 <% content_for :title do %>
-: Game Over:  "<%= Stats.find(@game.winner).user.username %>" wins
+: Game Over -  "<%= @winner.username %>" wins
 <% end %>
 
-<h1>Game#play</h1>
-<p>Find me in app/views/game/play.html.erb</p>
+<h2>Game Over!</h2>
 
-<p>User " <%= Stats.find(@game.winner).user.username %> " wins (in 
+<div class='container'>
+<p>User "<%= link_to @winner.username, @winner %>" wins (in 
 <%= @game.rounds_played %> of <%= @game.total_rounds %> rounds)!
 </p>
 
@@ -17,5 +17,4 @@
   <%= link_to "Game Details", @game %>
 </p>
 
-</br>
-
+</div>

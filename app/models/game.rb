@@ -4,7 +4,7 @@ class Game < ActiveRecord::Base
 
   validates_presence_of :player1, :total_rounds
 
-  validates_numericality_of :total_rounds, :only_integer => true
+  validates_numericality_of :total_rounds, :only_integer => true, :odd => true, :greater_than_or_equal_to => 0
   #validates_numericality_of :rounds_played, :only_integer => true, :less_than_or_equal_to => :total_rounds
   #validates_numericality_of :winner, :only_integer => true
   validates_numericality_of :player1, :only_integer => true
@@ -220,7 +220,7 @@ class Game < ActiveRecord::Base
     pick1 = theThrow1.to_i
     pick2 = rand(3)
 
-    puts "pick 1: #{pick1}, pick 2: #{pick2}"
+    #puts "pick 1: #{pick1}, pick 2: #{pick2}"
 
     case pick1
     when 0 then
@@ -268,8 +268,8 @@ class Game < ActiveRecord::Base
     else puts "WHAT - not between 0..2!" #fail
     end
 
-    puts "#{@curRound}, #{@roundWin}, #{@throw1}, #{@throw2}, #{pick1}"
-    puts "#{@rocks1}, #{@papers1}, #{@scissors1}"
+    #puts "#{@curRound}, #{@roundWin}, #{@throw1}, #{@throw2}, #{pick1}"
+    #puts "#{@rocks1}, #{@papers1}, #{@scissors1}"
     
     round = rounds.build(:num_round => @curRound, 
                  :winner => @roundWin, :player1 => @throw1,

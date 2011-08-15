@@ -25,8 +25,13 @@ class GamesController < ApplicationController
     @game = session[:game]
     @options = params[:game]
     @player2 = User.find_by_username('theAI').stats.id
-    @game.update_attributes(:player1 => @player1, :player2 => @player2, 
-                            :total_rounds => @options[:total_rounds])
+    if not @game.update_attributes(:player1 => @player1, :player2 => @player2, 
+           		           :total_rounds => @options[:total_rounds])
+      @game.delete
+      flash[:notice] = "Must a odd positive number of rounds!"
+      redirect_to :action => :new
+      return			   
+    end
 #    @game.init
     session[:game] = @game.id
     #@throw_names = Game::THROW_OPTIONS.invert
@@ -105,6 +110,7 @@ class GamesController < ApplicationController
     @game = Game.find(session[:game])
     #@game.play()
 
+    @winner = Stats.find(@game.winner).user
     session[:game] = nil
   end
 
@@ -112,6 +118,10 @@ class GamesController < ApplicationController
     @user = @current_user
     @game = Game.find(session[:game])
     @throw_names = Game::THROW_OPTIONS.invert
+    @curRound = @game.rounds_played ? @game.rounds_played : 1
+
+    @style1 = 'background-color:#AAE'
+    @style2 = 'background-color:#AEA'
 
     #session[:game] = @game.id
     respond_to do |format|
