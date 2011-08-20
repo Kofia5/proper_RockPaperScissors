@@ -5,7 +5,7 @@ class GamesController < ApplicationController
 
   def index
     @games = Game.where('winner IS NOT null')
-    @header_option = "all games"
+    @header_option = "All Games"
   end
 
   def new
@@ -28,7 +28,7 @@ class GamesController < ApplicationController
     if not @game.update_attributes(:player1 => @player1, :player2 => @player2, 
            		           :total_rounds => @options[:total_rounds])
       @game.delete
-      flash[:notice] = "Must a odd positive number of rounds!"
+      flash[:notice] = "Must pick an odd, positive number of rounds!"
       redirect_to :action => :new
       return			   
     end
@@ -48,8 +48,6 @@ class GamesController < ApplicationController
     @player2 = Stats.find(@game.player2).user
     @rounds = @game.rounds.order('rounds.id ASC')
     @throw_names = Game::THROW_OPTIONS.invert
-    @style1 = 'background-color:#AAE'
-    @style2 = 'background-color:#AEA'
   end
 
   def edit
@@ -58,8 +56,6 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(session[:game])
-
-#    @throw_names = Game::THROW_OPTIONS.invert
 
     respond_to do |format|
       if @game.play_round(params[:game])
@@ -74,15 +70,6 @@ class GamesController < ApplicationController
         format.xml  { head :ok  }
       end
     end
-    #respond_to do |format|
-    #  if @game.update_attributes(params[:game])
-    #    format.html { redirect_to(@game, :notice => 'Game was successfully updated.') }
-    #    format.xml  { head :ok }
-    #  else
-    #    format.html { render :action => "edit" }
-    #    format.xml  { render :xml => @game.errors, :status => :unprocessable_entity }
-    #  end
-    #end
   end
 
   def destroy
@@ -119,9 +106,6 @@ class GamesController < ApplicationController
     @game = Game.find(session[:game])
     @throw_names = Game::THROW_OPTIONS.invert
     @curRound = @game.rounds_played ? @game.rounds_played : 1
-
-    @style1 = 'background-color:#AAE'
-    @style2 = 'background-color:#AEA'
 
     #session[:game] = @game.id
     respond_to do |format|

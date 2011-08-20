@@ -7,15 +7,15 @@ class User < ActiveRecord::Base
     c.crypto_provider = Authlogic::CryptoProviders::BCrypt
    end
   
-  def games(limit=10, desc=true)
-    if stats
+  def games(limit=-1, desc=true)
+    if stats and not limit == 0
       direction = desc ? 'DESC' : 'ASC'
       stats.games.all(:limit => limit, :order => "games.id #{direction}")
     end
   end
 
-  def rounds(limit=10, desc=true)
-    if stats and not limit <= 0
+  def rounds(limit=-1, desc=true)
+    if stats and not limit == 0
       all_rounds = []
       direction = desc ? 'DESC' : 'ASC'
 

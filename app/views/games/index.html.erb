@@ -21,12 +21,14 @@
   </thead>
 
   <tbody>
-    <% @games.each do |game| %>
-    <% winner = Stats.find(game.winner).user %>
-    <% player1 = Stats.find(game.player1).user %>
-    <% player2 = Stats.find(game.player2).user %>
+    <% even = true;
+       @games.each do |game|
+         winner = Stats.find(game.winner).user;
+         player1 = Stats.find(game.player1).user;
+         player2 = Stats.find(game.player2).user;
+         even = even ? false : true; %>
     
-    <tr <%= @user ? "style="+(@user == winner ? @style1 : @style2) : "" %> >
+    <tr class=<%= @user ? (@user == winner ? 'win' : 'loss') : (even ? 'even' : 'odd') %>>
       <td><%= link_to winner.username, winner  %></td>
       <td><%= link_to player1.username, player1 %></td>
       <td><%= link_to player2.username, player2 %></td>

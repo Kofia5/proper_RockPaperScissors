@@ -17,9 +17,9 @@
 
 <p>
   <b>Record:</b>
-  <%= link_to @user.stats.wins, list_wins_user_path(@user), :style => @style1 %>
+  <%= link_to @user.stats.wins, list_wins_user_path(@user), :class => 'win' %>
   - 
-  <%= link_to (@user.stats.games_played - @user.stats.wins), list_losses_user_path(@user), :style => @style2 %>
+  <%= link_to (@user.stats.games_played - @user.stats.wins), list_losses_user_path(@user), :class => 'loss' %>
 </p>
 
 <p>
@@ -67,7 +67,7 @@
 </div>
 
 <p id='throws'>
-  <h3>Throw history</h3>
+  <h3>Throw History</h3>
 
   <table id='throwTable' class='tablesorter'>
     <thead>
@@ -104,7 +104,7 @@
 </p>
 
 <p id='rounds'>
-  <h3>Last 10 rounds played</h3>
+  <h3>Last 10 Rounds Played</h3>
 
   <table id="roundsTable" class="tablesorter">
     <thead>
@@ -124,23 +124,21 @@
       <% player2 = Stats.find(curGame.player2).user %>
 	
       <% if isOne %>
-      <tr <%= round.winner == 1 ? "style="+@style1 : 
-	     (round.winner == 2 ? "style="+@style2 : "") %>
-	  >
+      <tr<%= round.winner == 1 ? " class='win'" : 
+	     (round.winner == 2 ? " class='loss'" : "") %>>
 	<td><%= round.winner == -1 ? '_' : (round.winner == 1 ? 'Win' : 'Loss') %></td>
 	<td><%= link_to player2.username, player2 %></td>
 	<td><%= @throw_names[round.player1] %></td>
 	<td><%= @throw_names[round.player2] %></td>
-	<td><%= round.curScore1 %> - <%= round.curScore2 %></td>
+	<td><%= link_to "#{round.curScore1} - #{round.curScore2}", round.game %></td>
       <% else %>
-      <tr <%= round.winner == 1 ? "style="+@style2 : 
-	      (round.winner == 2 ? "style="+@style1 : "") %>
-	  >
+      <tr <%= round.winner == 1 ? " class='loss'" : 
+	      (round.winner == 2 ? " class='win'" : "") %>>
 	<td><%= round.winner == -1 ? '_' : (round.winner == 2 ? 'Win' : 'Loss') %></td>
 	<td><%= link_to player1.username, player1 %></td>
 	<td><%= @throw_names[round.player2]%></td>
 	<td><%= @throw_names[round.player1] %></td>
-	<td><%= round.curScore2 %> - <%= round.curScore1 %></td>
+	<td><%= link_to "#{round.curScore2} - #{round.curScore1}", round.game %></td>
 	<% end %>
       </tr>
       <% end %>

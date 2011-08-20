@@ -27,8 +27,6 @@ class UsersController < ApplicationController
     end
     @rounds = @user.rounds(10,true)
     @throw_names = Game::THROW_OPTIONS.invert
-    @style1 = 'background-color:#AAE';
-    @style2 = 'background-color:#AEA';
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @user }
@@ -108,8 +106,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @header_option = 'games'
     @games = @user.games
-    @style1 = 'background-color:#AAE'
-    @style2 = 'background-color:#AEA'
 
     respond_to do |format|
       format.html { render "games/index" }
@@ -121,7 +117,6 @@ class UsersController < ApplicationController
     @header_option = 'wins'
     @user = User.find(params[:id])
     @games = @user.games_won
-    @style1 = 'background-color:#AAE'
 
     respond_to do |format|
       format.html { render "games/index" }
@@ -133,7 +128,6 @@ class UsersController < ApplicationController
     @header_option = 'losses'
     @user = User.find(params[:id])
     @games = @user.games_lost
-    @style2 = 'background-color:#AEA'
 
     respond_to do |format|
       format.html { render "games/index" }

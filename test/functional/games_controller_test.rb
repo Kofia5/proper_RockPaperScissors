@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GameControllerTest < ActionController::TestCase
+class GamesControllerTest < ActionController::TestCase
   test "should get setup" do
     get :setup
     assert_response :success

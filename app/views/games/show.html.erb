@@ -7,33 +7,34 @@
 <div class='container'>
 <p>
   <b>Players:</b>
-  <%= link_to @player1.username, @player1, :style => @style1 %>
+  <%= link_to @player1.username, @player1, :class => 'win' %>
 	  vs.
-  <%= link_to @player2.username, @player2, :style => @style2 %>
+  <%= link_to @player2.username, @player2, :class => 'loss' %>
 </p>
 
 <p>
   <b>Winner:</b>
-  <%= link_to @winner.username, @winner, :style => (@winner == @player1 ?
-  @style1 : @style2) %>
+  <%= link_to @winner.username, @winner, :class => (@winner == @player1 ?
+  'win' : 'loss') %>
 </p>
 
 <p>
-  <b>Rounds:</b>
+  <b>Rounds Played:</b>
   <%= @game.rounds_played %> of <%= @game.total_rounds %>
 </p>
 
 <p>
   <b> Final Score:</b>
-  <span style=<%= @style1 %>><%= @game.score1 %></span>
+  <span class='win'><%= @game.score1 %></span>
   - 
-  <span style=<%= @style2 %>><%= @game.score2 %></span>
+  <span class='loss'><%= @game.score2 %></span>
 </p>
 
 </div>
 
+<div class='container'>
 <p>
-  <h3>Rounds:</h3>
+  <h3><%= link_to "Rounds", game_rounds_path(@game) %>:</h3>
 
   <table id="roundsTable" class="tablesorter">
     <thead>
@@ -48,11 +49,9 @@
 
     <tbody>
       <% @rounds.each do |round| %>
-      <tr
- 	 <%= round.winner == 1 ? "style="+@style1 : 
-	     (round.winner == 2 ? "style="+@style2 : "") %>
-	  >
-	<td><%= round.num_round %></td>
+      <tr<%= round.winner == 1 ? " class='win'" : 
+	     (round.winner == 2 ? " class='loss'" : "") %>>
+	<td><%= link_to round.num_round, game_round_path(@game,round) %></td>
 	<td><%= round.winner < 0 ? '_' : (round.winner == 1 ? (link_to @player1.username, @player1) : (link_to @player2.username, @player2) ) %></td>
 	<td><%= @throw_names[round.player1] %></td>
 	<td><%= @throw_names[round.player2] %></td>
@@ -63,3 +62,4 @@
   </table>
 
 </p>
+</div>

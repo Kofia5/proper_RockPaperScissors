@@ -101,6 +101,14 @@ footer {
 }
 
 
+.win {
+     background-color: #AAE;
+}
+
+.loss {
+      background-color:#AEA;
+}
+
 /* notices and errors */
 
 #notice {
@@ -168,7 +176,19 @@ table.tablesorter tbody td {
 }
 
 table.tablesorter tbody tr {
-    background-color: #AAA; #not working...
+    background-color: #AAA;
+}
+
+table.tablesorter tbody tr.odd {
+    background-color: #888;
+}
+
+table.tablesorter tbody tr.win {
+    background-color: #AAE;
+}
+
+table.tablesorter tbody tr.loss {
+    background-color: #AEA;
 }
 
 table.tablesorter thead tr .headerSortUp {
