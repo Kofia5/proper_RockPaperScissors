@@ -1,10 +1,10 @@
 <% content_for :title do %>
-: Listing <%= @user ?  @user.username + "'s" : '' %> 
+: List of <%= @user ?  @user.username + "'s" : '' %> 
   <%= @header_option %>
 <% end %>
 
 <h2>
-  Listing <%= @user ? (link_to  @user.username, @user)+"'s" : '' %> 
+  List of <%= @user ? (link_to  @user.username, @user)+"'s" : '' %> 
   <%= @header_option %>
 </h2>
 

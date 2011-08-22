@@ -57,6 +57,7 @@ class Game < ActiveRecord::Base
     @throw2 = throw2
     @roundWin = -1
     @tied = true
+    @tiePush += 1
   end
 
   def play(options=nil)
@@ -131,18 +132,26 @@ class Game < ActiveRecord::Base
       else #fail
       end
 
+      #keep track of ties: if tied, check previous round to see if we are in 
+      # a series of ties
+      tiePush = 0
+
       rounds.build(:num_round => curRound, 
                    :winner => @roundWin, :player1 => @throw1,
                    :player2 => @throw2, :curScore1 => @pointsFor1,
-                   :curScore2 => @pointsFor2)
-      if not @tied
-        if curRound >= total_rounds or @pointsFor1 >= winIn or 
+                   :curScore2 => @pointsFor2, tie => tiePush)
+      
+      if @tied
+	tiePush += rounds.last ? rounds.last.tie : 1
+      else #not tied
+        if ((curRound - tiePush) >= total_rounds) or @pointsFor1 >= winIn or 
            @pointsFor2 >= winIn
           playing = false
-        else
-          curRound += 1
-        end
+        end       
       end
+      
+      curRound += 1
+      
     end
 
     if @pointsFor1 > @pointsFor2
@@ -210,6 +219,7 @@ class Game < ActiveRecord::Base
     @scissors2 = 0
     @player1 = player1
     @player2 = player2
+    @tiePush = rounds.last ? (rounds.last.winner == -1 ? rounds.last.tie+1 : 0) : 0
 
     if options 
       theThrow1 = options[:play_round]
@@ -274,20 +284,20 @@ class Game < ActiveRecord::Base
     round = rounds.build(:num_round => @curRound, 
                  :winner => @roundWin, :player1 => @throw1,
                  :player2 => @throw2, :curScore1 => @pointsFor1,
-                 :curScore2 => @pointsFor2)
+                 :curScore2 => @pointsFor2, :tie => @tiePush)
     round.save
-
-    if @tied
-      return false
-    else #not @tied
-      if @curRound >= @total_rounds or @pointsFor1 >= @winIn or 
+    
+    if not @tied
+      if (@curRound >= @total_rounds) or @pointsFor1 >= @winIn or 
           @pointsFor2 >= @winIn
         gameOver = true
       else
         @curRound += 1
       end
-      update_attributes(:rounds_played => @curRound)
+      update_attribute(:rounds_played,@curRound)
     end
+
+
 
     if not gameOver
       return false
@@ -297,7 +307,8 @@ class Game < ActiveRecord::Base
         @loser = @player2
         @win = Stats.find(@winner)
         @loss = Stats.find(@loser)
-        
+
+	#This logic should be in Stats...
         @win.rocks += rounds.where(:player1 => 0).count + @rocks1
         @win.papers += rounds.where(:player1 => 1).count + @papers1
         @win.scissors += rounds.where(:player1 => 2).count + @scissors1
@@ -310,6 +321,7 @@ class Game < ActiveRecord::Base
         @win = Stats.find(@winner)
         @loss = Stats.find(@loser)
         
+	#This logic should be in Stats...
         @win.rocks += rounds.where(:player2 => 0).count + @rocks2
         @win.papers += rounds.where(:player2 => 1).count + @papers2
         @win.scissors += rounds.where(:player2 => 2).count + @scissors2

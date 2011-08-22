@@ -1,2 +1,67 @@
-<h1>Rounds#list</h1>
-<p>Find me in app/views/rounds/list.html.erb</p>
+<% content_for :title do %>
+: List of Game #<%= @game.id %>'s rounds
+<% end %>
+
+<h2>Rounds of Game #<%= @game.id %></h2>
+<p>Find me in app/views/rounds/index.html.erb</p>
+
+<div class='container'>
+  <p>
+    <b>Players:</b>
+    <%= link_to @player1.username, @player1, :class => 'win' %>
+    vs.
+    <%= link_to @player2.username, @player2, :class => 'loss' %>
+  </p>
+  
+  <p>
+    <b>Winner:</b>
+    <%= link_to @winner.username, @winner, :class => (@winner == @player1 ?
+    'win' : 'loss') %>
+  </p>
+
+  <p>
+    <b>Rounds Played:</b>
+    <%= @game.rounds_played %> of <%= @game.total_rounds %>
+  </p>
+  
+  <p>
+    <b>Final Score:</b>
+    <span class='win'><%= @game.score1 %></span>
+    - 
+    <span class='loss'><%= @game.score2 %></span>
+  </p>
+  
+</div>
+
+<div class='container'>
+<p>
+  <h3>Rounds</h3>
+
+  <table id="roundsTable" class="tablesorter">
+    <thead>
+      <tr>
+	<th>Round #</th>
+	<th>Winner</th>
+	<th><%= @player1.username %>'s throw</th>
+	<th><%= @player2.username %>'s throw</th>
+	<th>Current Score</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @rounds.each do |round| %>
+        <% roundName = "#{round.num_round}"+"#{round.tie > 0 ? "-#{round.tie}" : ''}" %>
+        <tr<%= round.winner == 1 ? " class='win'" : 
+	     (round.winner == 2 ? " class='loss'" : "") %>>
+	  <td><%= link_to roundName, game_round_path(@game,roundName) %></td>
+	  <td><%= round.winner < 0 ? '_' : (round.winner == 1 ? (link_to @player1.username, @player1) : (link_to @player2.username, @player2) ) %></td>
+	  <td><%= @throw_names[round.player1] %></td>
+	  <td><%= @throw_names[round.player2] %></td>
+	  <td><%= round.curScore1 %> - <%= round.curScore2 %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</p>
+</div>

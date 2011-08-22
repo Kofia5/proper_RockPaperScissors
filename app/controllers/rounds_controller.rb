@@ -1,12 +1,15 @@
 class RoundsController < ApplicationController
-  before_filter :find_game
+  before_filter :find_game, :current_user
 
   def new
   end
 
   def index
-      #@rounds = Round.find_all_by_game_id(params[:game_id])
       @rounds = @game.rounds
+      @winner = Stats.find(@game.winner).user
+      @player1 = Stats.find(@game.player1).user
+      @player2 = Stats.find(@game.player2).user
+      @throw_names = Game::THROW_OPTIONS.invert
   end
 
   def edit
@@ -16,8 +19,17 @@ class RoundsController < ApplicationController
   end
 
   def show
-      #@round = Round.find(params[:id])
-      #@round = @game.round(params[:id])
+     #@round = Round.find(params[:id])
+     curRound, tie = params[:id].split('-')
+     @round = @game.rounds[curRound.to_i + (tie ? tie.to_i-1 : 0)]
+     @player1 = Stats.find(@game.player1).user
+     @player2 = Stats.find(@game.player2).user
+     @winner = case @round.winner
+     	       	    when 1 then @player1
+		    when 2 then @player2
+		    else nil
+		    end
+     @throw_names = Game::THROW_OPTIONS.invert
   end
 
   def destroy

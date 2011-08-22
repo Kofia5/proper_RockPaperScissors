@@ -5,4 +5,13 @@ class Round < ActiveRecord::Base
   validates_numericality_of :winner, :only_integer => true
   validates_numericality_of :player1, :only_integer => true
   validates_numericality_of :player2, :only_integer => true
+
+  def next_round
+      
+  end
+
+  def prev_round
+
+  end
+
 end

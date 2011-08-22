@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110804140456) do
+ActiveRecord::Schema.define(:version => 20110822004935) do
 
   create_table "games", :force => true do |t|
     t.integer  "rounds_played"
@@ -36,13 +36,14 @@ ActiveRecord::Schema.define(:version => 20110804140456) do
   create_table "rounds", :force => true do |t|
     t.integer  "game_id"
     t.integer  "num_round"
-    t.integer  "winner",     :null => false
-    t.integer  "player1",    :null => false
-    t.integer  "player2",    :null => false
+    t.integer  "winner",                    :null => false
+    t.integer  "player1",                   :null => false
+    t.integer  "player2",                   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "curScore1"
     t.integer  "curScore2"
+    t.integer  "tie",        :default => 0
   end
 
   add_index "rounds", ["game_id"], :name => "index_rounds_on_game_id"

@@ -49,9 +49,10 @@
 
     <tbody>
       <% @rounds.each do |round| %>
+      	<% roundName = "#{round.num_round}"+"#{round.tie > 0 ? "-#{round.tie}" : ''}" %>
       <tr<%= round.winner == 1 ? " class='win'" : 
 	     (round.winner == 2 ? " class='loss'" : "") %>>
-	<td><%= link_to round.num_round, game_round_path(@game,round) %></td>
+	<td><%= link_to roundName, game_round_path(@game,roundName) %></td>
 	<td><%= round.winner < 0 ? '_' : (round.winner == 1 ? (link_to @player1.username, @player1) : (link_to @player2.username, @player2) ) %></td>
 	<td><%= @throw_names[round.player1] %></td>
 	<td><%= @throw_names[round.player2] %></td>

@@ -1,2 +1,34 @@
-<h1>Rounds#show</h1>
+<% content_for :title do %>
+: Round #<%= params[:id] %> of <%= @game.total_rounds %>
+<% end %>
+
+<h2>Round #<%= params[:id] %> of <%= link_to @game.total_rounds, game_rounds_path(@game) %></h2>
 <p>Find me in app/views/rounds/show.html.erb</p>
+
+<div class='container'>
+  <p>
+    <b>Round #<%= params[:id] %></b>
+  </p>
+
+  <p>
+    <b>Result:</b>
+    <%= @winner ? "'#{@winner.username}' wins" : "Tie" %>
+  </p>
+
+  <p>
+    <b><%= @player1.username %> threw:</b>
+    <%= @throw_names[@round.player1] %>
+  </p>
+
+  <p>
+    <b><%= @player2.username %> threw:</b>
+    <%= @throw_names[@round.player2] %>
+  </p>
+
+</div>
+
+<div class='container'>
+  <%# link_to_if(@) %> 
+   | 
+  <%# link_to_if() %>
+</div>
