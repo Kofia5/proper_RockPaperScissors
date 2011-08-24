@@ -8,6 +8,15 @@
   <%= @header_option %>
 </h2>
 
+<% if @user and not (@header_option == 'wins' or @header_option == 'losses') %>
+<div class='container'>
+Key:
+  <span class='win'>Win</span>
+  | 
+  <span class='loss'>Loss</span>
+</div>
+<% end %>
+
 <table id="gamesTable" class="tablesorter">
   <thead>
     <tr>
@@ -32,8 +41,8 @@
       <td><%= link_to winner.username, winner  %></td>
       <td><%= link_to player1.username, player1 %></td>
       <td><%= link_to player2.username, player2 %></td>
-      <td><%= game.rounds_played %> of <%= game.total_rounds %></td>
-      <td><%= game.score1 %> - <%= game.score2 %></td>
+      <td><%= link_to "#{game.rounds_played} of #{game.total_rounds}", game_rounds_path(game) %></td>
+      <td><%= link_to "#{game.score1} - #{game.score2}", game %></td>
       <td><%= link_to game.updated_at, game %></td>
     </tr>
     <% end %>

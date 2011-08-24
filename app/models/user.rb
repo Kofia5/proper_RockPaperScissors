@@ -42,4 +42,8 @@ class User < ActiveRecord::Base
     stats.games.order("games.id #{direction}").where("winner != ?", stats) 
   end
 
+  def to_s
+      username
+  end
+
 end

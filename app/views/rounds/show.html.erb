@@ -1,34 +1,41 @@
 <% content_for :title do %>
-: Round #<%= params[:id] %> of <%= @game.total_rounds %>
+: Game <%= @game.id %> - Round #<%= params[:id] %> of <%= @game.total_rounds %>
 <% end %>
 
-<h2>Round #<%= params[:id] %> of <%= link_to @game.total_rounds, game_rounds_path(@game) %></h2>
-<p>Find me in app/views/rounds/show.html.erb</p>
+<h2>Game <%= link_to(@game,@game) %> - Round #<%= params[:id] %> of <%= link_to @game.total_rounds, game_rounds_path(@game) %></h2>
+<p>First to <%= @game.total_rounds / 2 + 1 %></p>
 
 <div class='container'>
   <p>
-    <b>Round #<%= params[:id] %></b>
+    <b>Round #<%= @round %></b>
   </p>
 
   <p>
     <b>Result:</b>
-    <%= @winner ? "'#{@winner.username}' wins" : "Tie" %>
+    <%= @winner ? (link_to(@winner,@winner, class: @round.winner == 1 ? 'win' : 'loss' ) + " wins") : "Tie" %>
   </p>
 
   <p>
-    <b><%= @player1.username %> threw:</b>
+    <b>Current Score:</b>
+    [<span class='win'><%= @round.curScore1 %></span>
+    - 
+    <span class='loss'><%= @round.curScore2 %></span>]
+  </p>
+
+  <p>
+    <b><%= link_to @player1,@player1, class: 'win' %> threw:</b>
     <%= @throw_names[@round.player1] %>
   </p>
 
   <p>
-    <b><%= @player2.username %> threw:</b>
+    <b><%= link_to @player2,@player2, class: 'loss' %> threw:</b>
     <%= @throw_names[@round.player2] %>
   </p>
 
 </div>
 
 <div class='container'>
-  <%# link_to_if(@) %> 
-   | 
-  <%# link_to_if() %>
+  Adjacent Rounds: 
+  <%= @round.prev_round ? link_to(@round.prev_round,game_round_path(@game,@round.prev_round.to_s)) + " |" : '' %> 
+    <%= @round.next_round ? link_to(@round.next_round,game_round_path(@game.id,@round.next_round.to_s)) : '' %> 
 </div>

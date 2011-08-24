@@ -21,7 +21,9 @@ class RoundsController < ApplicationController
   def show
      #@round = Round.find(params[:id])
      curRound, tie = params[:id].split('-')
-     @round = @game.rounds[curRound.to_i + (tie ? tie.to_i-1 : 0)]
+     tie = tie ? tie.to_i : 0
+     @round_id = curRound.to_i + tie
+     @round = @game.rounds.find_by_num_round_and_tie(curRound, tie)
      @player1 = Stats.find(@game.player1).user
      @player2 = Stats.find(@game.player2).user
      @winner = case @round.winner

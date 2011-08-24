@@ -36,7 +36,7 @@ class GamesController < ApplicationController
     session[:game] = @game.id
     #@throw_names = Game::THROW_OPTIONS.invert
     respond_to do |format|
-      format.html { redirect_to :action => :playRound }
+      format.html { playRound } #redirect_to :action => :playRound }
       format.xml { render :xml => @game, :status => :created, :location => :@game }
     end
   end
@@ -64,7 +64,8 @@ class GamesController < ApplicationController
         }
         format.xml  { head :ok }
       else
-        format.html { redirect_to(:action => :playRound)
+        format.html { playRound
+	  #redirect_to(:action => :playRound)
           #render :playRound
         }
         format.xml  { head :ok  }
