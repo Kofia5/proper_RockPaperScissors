@@ -17,7 +17,17 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.xml
   def show
-    @user = params[:id] ? User.find(params[:id]) : @current_user
+    if params[:id]
+       if User.exists?(params[:id])
+       	  @user = User.find(params[:id])
+       else
+          redirect_to(users_url, :notice => "User with ID=#{params[:id]} not found")
+	  return
+       end
+    else #no id
+       @user = @current_user
+    end
+
     @total_throws = (@user.stats.rocks + @user.stats.papers + 
       @user.stats.scissors)
     if @total_throws > 0
@@ -61,12 +71,10 @@ class UsersController < ApplicationController
       if @user.save && @stats.save
         format.html { redirect_to(@user, :notice => 'User was successfully created.') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
-        #flash[:notice] = "Account register!"
-        #redirect_back_or_default account_url
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-        #render :action => :new
+
       end
     end
   end
@@ -80,8 +88,6 @@ class UsersController < ApplicationController
       if @user.update_attributes(params[:user])
         format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
         format.xml  { head :ok }
-        #flash[:notice] = "Account updated!"
-        #redirect_to account_url
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }

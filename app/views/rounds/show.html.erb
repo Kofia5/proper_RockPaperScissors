@@ -1,9 +1,9 @@
 <% content_for :title do %>
-: Game <%= @game.id %> - Round #<%= params[:id] %> of <%= @game.total_rounds %>
+: Game #<%= @game.id %> - Round #<%= params[:id] %> of <%= @game.total_rounds %>
 <% end %>
 
-<h2>Game <%= link_to(@game,@game) %> - Round #<%= params[:id] %> of <%= link_to @game.total_rounds, game_rounds_path(@game) %></h2>
-<p>First to <%= @game.total_rounds / 2 + 1 %></p>
+<h2>Game #<%= link_to(@game,@game) %> - Round #<%= params[:id] %> of <%= link_to @game.total_rounds, game_rounds_path(@game) %></h2>
+<h4>First to <%= @game.first_to %></h4>
 
 <div class='container'>
   <p>

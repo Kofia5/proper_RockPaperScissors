@@ -40,7 +40,13 @@ class RoundsController < ApplicationController
   private
 
   def find_game
-     @game = Game.find(params[:game_id])
+    if Game.exists?(params[:game_id])
+      @game = Game.find(params[:game_id])
+    else
+      errorMsg = "Game with ID=#{params[:game_id]} not found"
+      redirect_to(games_url, notice: errorMsg)
+      return
+    end
   end
 
 end

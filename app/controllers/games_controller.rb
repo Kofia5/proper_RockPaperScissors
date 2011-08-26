@@ -42,7 +42,13 @@ class GamesController < ApplicationController
   end
 
   def show
-    @game = Game.find(params[:id])
+    if Game.exists?(params[:id])
+      @game = Game.find(params[:id])
+    else
+      redirect_to(games_url, :notice => "Game with ID=#{params[:id]} not found")
+      return
+    end
+        
     @winner = Stats.find(@game.winner).user
     @player1 = Stats.find(@game.player1).user
     @player2 = Stats.find(@game.player2).user
@@ -107,8 +113,8 @@ class GamesController < ApplicationController
     @game = Game.find(session[:game])
     @throw_names = Game::THROW_OPTIONS.invert
     @curRound = @game.rounds_played ? @game.rounds_played : 1
+    @showRounds = @game.rounds.any?
 
-    #session[:game] = @game.id
     respond_to do |format|
       format.html { render 'playRound' }
       format.xml { render :xml => @game, :status => :roundplayed, :location => :@game }

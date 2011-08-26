@@ -222,5 +222,9 @@ class Game < ActiveRecord::Base
   def to_s
       id
   end
+
+  def first_to
+    (total_rounds / 2) + 1 
+  end
       
 end

@@ -21,8 +21,9 @@
 </p>
 </div>
 
-<% if @curRound > 1 or @game.rounds.count > 0 
-     @player1 = Stats.find(@game.player1).user;
+<% if @showRounds %>
+ 
+  <% @player1 = Stats.find(@game.player1).user;
      @player2 = Stats.find(@game.player2).user;
      @rounds = @game.rounds.order('rounds.id DESC'); %>
 
@@ -43,10 +44,9 @@
       
       <tbody>
 	<% @rounds.each do |round| %>
-      	  <% roundName = "#{round.num_round}"+"#{round.tie > 0 ? "-#{round.tie}" : ''}" %>
 	  <tr<%= round.winner == 1 ? " class='win'" : 
 	       (round.winner == 2 ? " class='loss'" : "") %>>
-	    <td><%= roundName %></td>
+	    <td><%= round.to_s %></td>
 	    <td><%= round.winner < 0 ? '_' : (round.winner == 1 ? (link_to @player1.username, @player1) : (link_to @player2.username, @player2) ) %></td>
 	    <td><%= @throw_names[round.player1] %></td>
 	    <td><%= @throw_names[round.player2] %></td>

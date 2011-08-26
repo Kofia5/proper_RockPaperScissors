@@ -3,7 +3,7 @@
 <% end %>
 
 <h2>Rounds of Game #<%= @game.id %></h2>
-<h4>First to <%= @game.total_rounds / 2 + 1 %></h4>
+<h4>First to <%= @game.first_to %></h4>
 
 <div class='container'>
   <p>
@@ -50,10 +50,9 @@
 
     <tbody>
       <% @rounds.each do |round| %>
-        <% roundName = "#{round.num_round}"+"#{round.tie > 0 ? "-#{round.tie}" : ''}" %>
         <tr<%= round.winner == 1 ? " class='win'" : 
 	     (round.winner == 2 ? " class='loss'" : "") %>>
-	  <td><%= link_to roundName, game_round_path(@game,roundName) %></td>
+	  <td><%= link_to round, game_round_path(@game,round.to_s) %></td>
 	  <td><%= round.winner < 0 ? '_' : (round.winner == 1 ? (link_to @player1.username, @player1) : (link_to @player2.username, @player2) ) %></td>
 	  <td><%= @throw_names[round.player1] %></td>
 	  <td><%= @throw_names[round.player2] %></td>

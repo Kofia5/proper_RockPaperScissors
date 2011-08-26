@@ -1,15 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.9'
+gem 'rails', '3.0.9' #change to 3.0.10 soon
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'sqlite3'
-
-gem 'authlogic'
-
-gem 'bcrypt-ruby'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -22,6 +16,9 @@ gem 'bcrypt-ruby'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 # Bundle the extra gems:
+gem 'sqlite3'
+gem 'authlogic'
+gem 'bcrypt-ruby'
 # gem 'bj'
 # gem 'nokogiri'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
