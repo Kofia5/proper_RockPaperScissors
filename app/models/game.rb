@@ -4,11 +4,11 @@ class Game < ActiveRecord::Base
 
   validates_presence_of :player1, :total_rounds
 
-  validates_numericality_of :total_rounds, :only_integer => true, :odd => true, :greater_than_or_equal_to => 0
-  #validates_numericality_of :rounds_played, :only_integer => true, :less_than_or_equal_to => :total_rounds
-  #validates_numericality_of :winner, :only_integer => true
-  validates_numericality_of :player1, :only_integer => true
-  #validates_numericality_of :player2, :only_integer => true
+  validates_numericality_of :total_rounds, only_integer: true, odd: true, greater_than_or_equal_to: 0
+  #validates_numericality_of :rounds_played, only_integer: true, less_than_or_equal_to: :total_rounds
+  #validates_numericality_of :winner, only_integer: true
+  validates_numericality_of :player1, only_integer: true
+  #validates_numericality_of :player2, only_integer: true
 
 
   THROW_OPTIONS = {"Rock" => 0, "Paper" => 1, "Scissor" => 2}
@@ -146,10 +146,10 @@ class Game < ActiveRecord::Base
     #puts "#{@curRound}, #{@roundWin}, #{@throw1}, #{@throw2}, #{pick1}"
     #puts "#{@rocks1}, #{@papers1}, #{@scissors1}"
     
-    round = rounds.build(:num_round => @curRound, 
-                 :winner => @roundWin, :player1 => @throw1,
-                 :player2 => @throw2, :curScore1 => @pointsFor1,
-                 :curScore2 => @pointsFor2, :tie => @tiePush)
+    round = rounds.build(num_round: @curRound, winner: @roundWin, 
+    	    	         player1: @throw1, player2: @throw2, 
+			 curScore1: @pointsFor1, curScore2: @pointsFor2, 
+			 tie: @tiePush)
     round.save
     
     if not @tied
@@ -174,12 +174,12 @@ class Game < ActiveRecord::Base
         @loss = Stats.find(@loser)
 
 	#This logic should be in Stats...
-        @win.rocks += rounds.where(:player1 => 0).count + @rocks1
-        @win.papers += rounds.where(:player1 => 1).count + @papers1
-        @win.scissors += rounds.where(:player1 => 2).count + @scissors1
-        @loss.rocks +=  rounds.where(:player2 => 0).count + @rocks2
-        @loss.papers += rounds.where(:player2 => 1).count + @papers2
-        @loss.scissors += rounds.where(:player2 => 2).count + @scissors2
+        @win.rocks += rounds.where(player1: 0).count + @rocks1
+        @win.papers += rounds.where(player1: 1).count + @papers1
+        @win.scissors += rounds.where(player1: 2).count + @scissors1
+        @loss.rocks +=  rounds.where(player2: 0).count + @rocks2
+        @loss.papers += rounds.where(player2: 1).count + @papers2
+        @loss.scissors += rounds.where(player2: 2).count + @scissors2
       else
         @winner = @player2
         @loser = @player1
@@ -187,16 +187,16 @@ class Game < ActiveRecord::Base
         @loss = Stats.find(@loser)
         
 	#This logic should be in Stats...
-        @win.rocks += rounds.where(:player2 => 0).count + @rocks2
-        @win.papers += rounds.where(:player2 => 1).count + @papers2
-        @win.scissors += rounds.where(:player2 => 2).count + @scissors2
-        @loss.rocks += rounds.where(:player1 => 0).count + @rocks1
-        @loss.papers += rounds.where(:player1 => 2).count + @papers1
-        @loss.scissors += rounds.where(:player1 => 2).count + @scissors1
+        @win.rocks += rounds.where(player2: 0).count + @rocks2
+        @win.papers += rounds.where(player2: 1).count + @papers2
+        @win.scissors += rounds.where(player2: 2).count + @scissors2
+        @loss.rocks += rounds.where(player1: 0).count + @rocks1
+        @loss.papers += rounds.where(player1: 2).count + @papers1
+        @loss.scissors += rounds.where(player1: 2).count + @scissors1
       end
 
-      update_attributes(:score1 => @pointsFor1, :score2 => @pointsFor2, 
-                        :winner => @winner)
+      update_attributes(score1: @pointsFor1, score2: @pointsFor2, 
+      		        winner: @winner)
       if save
         
         #TODO - add users to game after the game is played
@@ -225,6 +225,19 @@ class Game < ActiveRecord::Base
 
   def first_to
     (total_rounds / 2) + 1 
+  end
+
+  def find_round(roundStr)
+      r,t = roundStr.split('-')
+      
+      r = r.to_i
+      t = t ? t.to_i : 0    
+      
+      rounds.find_by_num_round_and_tie(r,t)
+  end
+
+  def stats
+      Stats.find(player1,player2,include: :user)
   end
       
 end

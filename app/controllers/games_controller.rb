@@ -32,9 +32,10 @@ class GamesController < ApplicationController
       redirect_to :action => :new
       return			   
     end
-#    @game.init
+
+    @prevThrow = 0
     session[:game] = @game.id
-    #@throw_names = Game::THROW_OPTIONS.invert
+
     respond_to do |format|
       format.html { playRound } #redirect_to :action => :playRound }
       format.xml { render :xml => @game, :status => :created, :location => :@game }
@@ -43,16 +44,17 @@ class GamesController < ApplicationController
 
   def show
     if Game.exists?(params[:id])
-      @game = Game.find(params[:id])
+      @game = Game.find(params[:id], include: :rounds)
     else
       redirect_to(games_url, :notice => "Game with ID=#{params[:id]} not found")
       return
     end
         
-    @winner = Stats.find(@game.winner).user
-    @player1 = Stats.find(@game.player1).user
-    @player2 = Stats.find(@game.player2).user
-    @rounds = @game.rounds.order('rounds.id ASC')
+    @player1, @player2 = @game.stats
+    @player1 = @player1.user
+    @player2 = @player2.user
+    @winner = @game.player1 == @game.winner ? @player1 : @player2
+    @rounds = @game.rounds
     @throw_names = Game::THROW_OPTIONS.invert
   end
 
@@ -62,19 +64,15 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(session[:game])
-
+    @prevThrow = params[:game] ? params[:game][:play_round].to_i : 0
+    
     respond_to do |format|
       if @game.play_round(params[:game])
-        format.html { redirect_to(:action => :play)
-        #redirect_to '/games#play' 
-        }
+        format.html { redirect_to(:action => :play) }
         format.xml  { head :ok }
       else
-        format.html { playRound
-	  #redirect_to(:action => :playRound)
-          #render :playRound
-        }
-        format.xml  { head :ok  }
+        format.html { playRound }
+        format.xml  { head :ok }
       end
     end
   end
@@ -84,7 +82,7 @@ class GamesController < ApplicationController
     @game.destroy
 
     respond_to do |format|
-      format.html { redirect_to(:index, :notice => "Game successfully deleted") }
+          format.html { redirect_to(:index, :notice => "Game successfully deleted") }
       format.xml  { head :ok }
     end
   end
@@ -102,7 +100,6 @@ class GamesController < ApplicationController
 
   def play
     @game = Game.find(session[:game])
-    #@game.play()
 
     @winner = Stats.find(@game.winner).user
     session[:game] = nil
@@ -113,7 +110,7 @@ class GamesController < ApplicationController
     @game = Game.find(session[:game])
     @throw_names = Game::THROW_OPTIONS.invert
     @curRound = @game.rounds_played ? @game.rounds_played : 1
-    @showRounds = @game.rounds.any?
+    @showRounds = @game.rounds.any?    
 
     respond_to do |format|
       format.html { render 'playRound' }

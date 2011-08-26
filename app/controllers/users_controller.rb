@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    @users = User.all
+    @users = User.all(include: :stats)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def show
     if params[:id]
        if User.exists?(params[:id])
-       	  @user = User.find(params[:id])
+       	  @user = User.find(params[:id], include: :stats)
        else
           redirect_to(users_url, :notice => "User with ID=#{params[:id]} not found")
 	  return

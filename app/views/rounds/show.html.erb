@@ -35,7 +35,8 @@
 </div>
 
 <div class='container'>
-  Adjacent Rounds: 
-  <%= @round.prev_round ? link_to(@round.prev_round,game_round_path(@game,@round.prev_round.to_s)) + " |" : '' %> 
-    <%= @round.next_round ? link_to(@round.next_round,game_round_path(@game.id,@round.next_round.to_s)) : '' %> 
+  Rounds: 
+  <%= @round.prev_round ? link_to("Previous (#{@round.prev_round})",game_round_path(@game,@round.prev_round.to_s)) : '' %>
+  <%= (@round.prev_round and @round.next_round) ? " | " : "" %>
+    <%= @round.next_round ? link_to("Next (#{@round.next_round})",game_round_path(@game.id,@round.next_round.to_s)) : '' %> 
 </div>

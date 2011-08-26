@@ -8,9 +8,15 @@ class User < ActiveRecord::Base
    end
   
   def games(limit=-1, desc=true)
-    if stats and not limit == 0
+    if stats
       direction = desc ? 'DESC' : 'ASC'
-      stats.games.all(:limit => limit, :order => "games.id #{direction}")
+      if limit < 0
+      	 stats.games.order("games.id #{direction}")
+      elsif limit > 0
+      	 stats.games.all(limit: limit, order: "games.id #{direction}")
+      else #limit == 0
+      	 return
+      end
     end
   end
 
@@ -20,8 +26,8 @@ class User < ActiveRecord::Base
       direction = desc ? 'DESC' : 'ASC'
 
       stats.games.all(:order => "games.id #{direction}").each do |game|
-        new_rounds = game.rounds.all(:limit => limit,
-                                     :order => "rounds.id #{direction}")
+        new_rounds = game.rounds.all(limit: limit,
+                                     order: "rounds.id #{direction}")
         all_rounds << new_rounds
         limit -= new_rounds.size
         if limit <= 0
@@ -34,7 +40,7 @@ class User < ActiveRecord::Base
 
   def games_won(desc=true)
     direction = desc ? 'DESC' : 'ASC'
-    stats.games.find_all_by_winner(stats, :order => "games.id #{direction}")
+    stats.games.find_all_by_winner(stats, order: "games.id #{direction}", include: stats)
   end
 
   def games_lost(desc=true)

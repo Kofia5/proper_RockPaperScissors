@@ -3,22 +3,23 @@
 <% end %>
 
 <h2>Round <%= @curRound %> of <%= @game.total_rounds %> </h2>
+<h4>First to <%= @game.first_to %></h4>
 
 <div class='container'>
-<p>Select Throw to Play :
-<%= form_for @game, :method => "put" do |f| %>
-<ul>
-<% @throw_names.each do |throw| %>
-<li>
-<%= f.label throw[1] %>
-<%= f.radio_button :play_round, throw[0] %>
-</li>
-<% end %>
-</ul>
-<%= f.submit 'Make Throw' %>
-<% end %> 
+  <p>Select Throw to Play :
+    <%= form_for @game, method: 'put' do |f| %>
+    <ul>
+      <% @throw_names.each do |throw| %>
+      <li>
+	<%= f.label throw[1] %>
+	<%= f.radio_button :play_round, throw[0], checked: (@prevThrow == throw[0]) %>
+      </li>
+      <% end %>
+    </ul>
+    <%= f.submit 'Make Throw' %>
+    <% end %> 
 
-</p>
+  </p>
 </div>
 
 <% if @showRounds %>
