@@ -40,17 +40,17 @@
 
 <p>
   <b>Last request at:</b>
-  <%= @user.last_request_at.to_formatted_s(:long_ordinal) %>
+  <%= @user.last_request_at ? @user.last_request_at.to_formatted_s(:long_ordinal) : '' %>
 </p>
 
 <p>
   <b>Current login at:</b>
-  <%= @user.current_login_at.to_formatted_s(:long_ordinal) %> 
+  <%= @user.current_login_at ? @user.current_login_at.to_formatted_s(:long_ordinal) : '' %> 
 </p>
 
 <p>
   <b>Last login at:</b>
-  <%= @user.last_login_at.to_formatted_s(:long_ordinal) %>
+  <%= @user.last_login_at ? @user.last_login_at.to_formatted_s(:long_ordinal) : '' %>
 </p>
 
 <p>
@@ -63,8 +63,16 @@
   <%= @user.last_login_ip %>
 </p>
 
+<% if @current_user.username == 'theAI' %>
+<p>
+  <%= button_to 'Delete Incomplete Games', :delete_incomplete, :method => :get, confirm: 'WARNING: Will delete any games currently in progress' %>
+</p>
+<% end %>
+
 <% end %>
 </div>
+
+<% if @rounds.any? %>
 
 <p id='throws'>
   <h3>Throw History</h3>
@@ -104,7 +112,7 @@
 </p>
 
 <p id='rounds'>
-  <h3>Last 10 Rounds Played</h3>
+  <h3>Last <%= @rounds.count %> Rounds Played</h3>
 
   <table id="roundsTable" class="tablesorter">
     <thead>
@@ -145,3 +153,5 @@
     </tbody>
   </table>
 </p>
+
+<% end %>

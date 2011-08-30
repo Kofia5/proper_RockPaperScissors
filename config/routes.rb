@@ -21,6 +21,9 @@ ProperRockPaperScissors::Application.routes.draw do
   match 'register' => 'users#new', :as => :register
   match 'login' => 'user_sessions#new', :as => :login
   match 'logout' => 'user_sessions#destroy', :as => :logout
+  
+  match 'delete_incomplete' => 'games#delete_incomplete'
+
   resource :user_session
 
   root :controller => "user_sessions", :action => "new"

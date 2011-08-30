@@ -123,4 +123,13 @@ class GamesController < ApplicationController
       format.xml { render xml: @game, status: :roundplayed, location: @game }
     end
   end
+
+  def delete_incomplete
+    @incompleteGames = Game.where('winner IS null')
+    @incompleteGames.each do |game|
+      game.delete
+    end
+    redirect_back_or_default account_path
+  end
+
 end
