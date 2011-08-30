@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :only => [:edit, :update, :destroy]
-  before_filter :current_user
+  before_filter :require_no_user, only: [:new, :create]
+  before_filter :require_user, only: [:edit, :update, :destroy]
+  before_filter :current_user, not: [:new, :create, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.xml
@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @users }
+      format.xml  { head :ok }
     end
   end
 
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
        if User.exists?(params[:id])
        	  @user = User.find(params[:id], include: :stats)
        else
-          redirect_to(users_url, :notice => "User with ID=#{params[:id]} not found")
+          redirect_to(users_url, notice: "User with ID=#{params[:id]} not found")
 	  return
        end
     else #no id
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
     @throw_names = Game::THROW_OPTIONS.invert
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @user }
+      format.xml  { render xml: @user }
     end
   end
 
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @user }
+      format.xml  { render xml: @user }
     end
   end
 
@@ -69,11 +69,11 @@ class UsersController < ApplicationController
     @user.stats = @stats
     respond_to do |format|
       if @user.save && @stats.save
-        format.html { redirect_to(@user, :notice => 'User was successfully created.') }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
+        format.html { redirect_to(@user, notice: 'User was successfully created.') }
+        format.xml  { render xml: @user, status: :created, location: @user }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @user.errors, status: :unprocessable_entity }
 
       end
     end
@@ -86,12 +86,12 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
+        format.html { redirect_to(@user, notice: 'User was successfully updated.') }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
-        #render :action => :edit
+        format.html { render :edit }
+        format.xml  { render xml: @user.errors, status: :unprocessable_entity }
+        #render action: :edit
       end
     end
   end
@@ -103,7 +103,7 @@ class UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to(users_url) }
+      format.html { redirect_back_or_default(users_url) }
       format.xml  { head :ok }
     end
   end
@@ -115,7 +115,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { render "games/index" }
-      format.xml  { head :ok }
+      format.xml  { render xml: @games }
     end
   end
 
@@ -126,7 +126,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { render "games/index" }
-      format.xml  { head :ok }
+      format.xml  { render xml: @games }
     end
   end
 
@@ -137,7 +137,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html { render "games/index" }
-      format.xml  { head :ok }
+      format.xml  { render xml: @games }
     end
   end
 

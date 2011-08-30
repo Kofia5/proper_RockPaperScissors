@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
       all_rounds = []
       direction = desc ? 'DESC' : 'ASC'
 
-      stats.games.all(:order => "games.id #{direction}").each do |game|
+      stats.games.order("games.id #{direction}").each do |game|
         new_rounds = game.rounds.all(limit: limit,
                                      order: "rounds.id #{direction}")
         all_rounds << new_rounds
@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
 
   def games_won(desc=true)
     direction = desc ? 'DESC' : 'ASC'
-    stats.games.find_all_by_winner(stats, order: "games.id #{direction}", include: stats)
+    stats.games.find_all_by_winner(stats, order: "games.id #{direction}")
   end
 
   def games_lost(desc=true)

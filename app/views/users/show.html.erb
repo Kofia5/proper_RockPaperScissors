@@ -17,9 +17,9 @@
 
 <p>
   <b>Record:</b>
-  <%= link_to @user.stats.wins, list_wins_user_path(@user), :class => 'win' %>
+  <%= link_to @user.stats.wins, list_wins_user_path(@user), class: 'win' %>
   - 
-  <%= link_to (@user.stats.games_played - @user.stats.wins), list_losses_user_path(@user), :class => 'loss' %>
+  <%= link_to (@user.stats.games_played - @user.stats.wins), list_losses_user_path(@user), class: 'loss' %>
 </p>
 
 <p>
@@ -40,17 +40,17 @@
 
 <p>
   <b>Last request at:</b>
-  <%= @user.last_request_at %>
+  <%= @user.last_request_at.to_formatted_s(:long_ordinal) %>
 </p>
 
 <p>
   <b>Current login at:</b>
-  <%= @user.current_login_at %>
+  <%= @user.current_login_at.to_formatted_s(:long_ordinal) %> 
 </p>
 
 <p>
   <b>Last login at:</b>
-  <%= @user.last_login_at %>
+  <%= @user.last_login_at.to_formatted_s(:long_ordinal) %>
 </p>
 
 <p>
@@ -113,20 +113,20 @@
 	<th>Opponent</th>
 	<th><%= @user.username %> played</th>
 	<th>Opponent played</th>
-	<th>Current Game Score</th>
+	<th>Resulting Score</th>
       </tr>
     </thead>
     <tbody>
       <% @rounds.each do |round| %>
-      <% curGame = Game.find(round.game_id) %>
-      <% isOne = curGame.player1 == @user.stats.id %>
-      <% player1 = Stats.find(curGame.player1).user %>
-      <% player2 = Stats.find(curGame.player2).user %>
+        <% curGame = Game.find(round.game_id);
+           isOne = curGame.player1 == @user.stats.id;
+           player1 = Stats.find(curGame.player1).user;
+           player2 = Stats.find(curGame.player2).user %>
 	
       <% if isOne %>
       <tr<%= round.winner == 1 ? " class='win'" : 
 	     (round.winner == 2 ? " class='loss'" : "") %>>
-	<td><%= round.winner == -1 ? '_' : (round.winner == 1 ? 'Win' : 'Loss') %></td>
+	<td><%= link_to (round.winner == -1 ? '_' : (round.winner == 1 ? 'Win' : 'Loss')), game_round_path(round.game,round.to_s) %></td>
 	<td><%= link_to player2.username, player2 %></td>
 	<td><%= @throw_names[round.player1] %></td>
 	<td><%= @throw_names[round.player2] %></td>
@@ -134,7 +134,7 @@
       <% else %>
       <tr <%= round.winner == 1 ? " class='loss'" : 
 	      (round.winner == 2 ? " class='win'" : "") %>>
-	<td><%= round.winner == -1 ? '_' : (round.winner == 2 ? 'Win' : 'Loss') %></td>
+	<td><%= link_to (round.winner == -1 ? '_' : (round.winner == 2 ? 'Win' : 'Loss')), game_round_path(round.game,round.to_s) %></td>
 	<td><%= link_to player1.username, player1 %></td>
 	<td><%= @throw_names[round.player2]%></td>
 	<td><%= @throw_names[round.player1] %></td>

@@ -1,11 +1,15 @@
 class GamesController < ApplicationController
 
-  before_filter :require_user, :only => [:setup, :update, :play, :destroy]
-  before_filter :current_user
+  before_filter :require_user, only: [:setup, :update, :play, :destroy]
+  before_filter :current_user, not: [:setup, :update, :play, :destroy]
 
   def index
-    @games = Game.where('winner IS NOT null')
+    @games = Game.where('winner IS NOT null').order('updated_at DESC')
     @header_option = "All Games"
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml { render xml: @games }
+    end
   end
 
   def new
@@ -15,7 +19,8 @@ class GamesController < ApplicationController
     session[:game] = @game
     respond_to do |format|
       format.html { render 'new' }
-      format.xml { render :xml => @game, :status => :created, :location => :@game }
+      format.xml { render xml: @game, status: :created, location: :@game }
+      format.js
     end
   end
 
@@ -25,8 +30,8 @@ class GamesController < ApplicationController
     @game = session[:game]
     @options = params[:game]
     @player2 = User.find_by_username('theAI').stats.id
-    if not @game.update_attributes(:player1 => @player1, :player2 => @player2, 
-           		           :total_rounds => @options[:total_rounds])
+    if not @game.update_attributes(player1: @player1, player2: @player2, 
+           		           total_rounds: @options[:total_rounds])
       @game.delete
       flash[:notice] = "Must pick an odd, positive number of rounds!"
       redirect_to :action => :new
@@ -37,8 +42,9 @@ class GamesController < ApplicationController
     session[:game] = @game.id
 
     respond_to do |format|
-      format.html { playRound } #redirect_to :action => :playRound }
-      format.xml { render :xml => @game, :status => :created, :location => :@game }
+      format.html { playRound }
+      format.xml { render xml: @game, status: :created, location: :@game }
+      format.js 
     end
   end
 
@@ -46,7 +52,7 @@ class GamesController < ApplicationController
     if Game.exists?(params[:id])
       @game = Game.find(params[:id], include: :rounds)
     else
-      redirect_to(games_url, :notice => "Game with ID=#{params[:id]} not found")
+      redirect_to(games_url, notice: "Game with ID=#{params[:id]} not found")
       return
     end
         
@@ -82,7 +88,7 @@ class GamesController < ApplicationController
     @game.destroy
 
     respond_to do |format|
-          format.html { redirect_to(:index, :notice => "Game successfully deleted") }
+          format.html { redirect_to(:index, notice: "Game successfully deleted") }
       format.xml  { head :ok }
     end
   end
@@ -90,11 +96,11 @@ class GamesController < ApplicationController
   def setup
     @user = @current_user
     @player1 = @user.stats.id
-    @game = Game.new(:player1 => @player1)
+    @game = Game.new(player1: @player1)
     session[:game] = @game
     respond_to do |format|
       format.html { render 'setup' }
-      format.xml { render :xml => @game, :status => :created, :location => :@game }
+      format.xml { render xml: @game, status: :created, location: @game }
     end
   end
 
@@ -114,7 +120,7 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       format.html { render 'playRound' }
-      format.xml { render :xml => @game, :status => :roundplayed, :location => :@game }
+      format.xml { render xml: @game, status: :roundplayed, location: @game }
     end
   end
 end

@@ -1,10 +1,11 @@
 class RoundsController < ApplicationController
-  before_filter :current_user, :find_game
+  before_filter :current_user
 
   def new
   end
 
   def index
+      find_game(true)
       @rounds = @game.rounds
       @player1, @player2 = @game.stats
       @player1 = @player1.user
@@ -20,6 +21,7 @@ class RoundsController < ApplicationController
   end
 
   def show
+     find_game
      @round = @game.find_round(params[:id])
      @player1, @player2 = @game.stats
      @player1 = @player1.user
@@ -37,9 +39,10 @@ class RoundsController < ApplicationController
 
   private
 
-  def find_game
+  def find_game(withRounds=false)
     if Game.exists?(params[:game_id])
-      @game = Game.find(params[:game_id])
+      @game = withRounds ? Game.find(params[:game_id], include: :rounds) : 
+      	      		   Game.find(params[:game_id])
     else
       errorMsg = "Game with ID=#{params[:game_id]} not found"
       redirect_to(games_url, notice: errorMsg)

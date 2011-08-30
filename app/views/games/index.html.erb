@@ -43,7 +43,7 @@ Key:
       <td><%= link_to player2.username, player2 %></td>
       <td><%= link_to "#{game.rounds_played} of #{game.total_rounds}", game_rounds_path(game) %></td>
       <td><%= link_to "#{game.score1} - #{game.score2}", game %></td>
-      <td><%= link_to game.updated_at, game %></td>
+      <td><%= link_to game.updated_at.to_formatted_s(:short), game %></td>
     </tr>
     <% end %>
   </tbody>
